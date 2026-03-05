@@ -208,6 +208,20 @@ Think of it like a human reviewing their journal and updating their mental model
 
 The goal: Be helpful without being annoying. Check in a few times a day, do useful background work, but respect quiet time.
 
+## 决策触发（执行规则）
+
+当用户出现以下信号时，主动读取并对照 `PLAYBOOK.md`：
+
+- 犹豫不决（如："要不要做"、"你觉得该不该做"）
+- 讨论新机会/新方向
+- 表达困惑或迷茫
+- 询问"我该怎么做"
+
+执行方式：
+1. 先用 PLAYBOOK 框架快速判断（是否值得做 / 为什么）
+2. 给出 1-3 个可执行下一步（优先低成本验证）
+3. 涉及关键取舍时，让用户确认后再推进
+
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
