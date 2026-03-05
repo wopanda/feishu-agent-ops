@@ -57,7 +57,7 @@ if ! jq -e '.results' "$TMP_JSON" >/dev/null 2>&1; then
 - 扩大时间窗口到 48h
 
 ---
-*📅 生成时间: $(date '+%Y-%m-%d %H:%M:%S')*
+*📅 生成时间: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S') (Asia/Shanghai)*
 *⚙️ 配置文件: topic-monitor-config.json*
 EOF
   echo "报告已生成: $OUT_FILE"
@@ -212,7 +212,11 @@ function whyImportant(it) {
   md += `- 📄 详情抓取成功: ${detailSuccess}/${enriched.length} 条\n\n`;
 
   md += `---\n`;
-  md += `*📅 生成时间: ${new Date().toISOString().replace('T', ' ').slice(0, 19)}*\n`;
+  const nowCn = new Date().toLocaleString('sv-SE', {
+    timeZone: 'Asia/Shanghai',
+    hour12: false
+  }).replace('T', ' ');
+  md += `*📅 生成时间: ${nowCn} (Asia/Shanghai)*\n`;
   md += `*⚙️ 配置文件: topic-monitor-config.json*\n`;
   md += `*🧩 模板版本: 标准模板 v2（详情抓取）*\n`;
 
