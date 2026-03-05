@@ -210,7 +210,8 @@ The goal: Be helpful without being annoying. Check in a few times a day, do usef
 
 ## 决策触发（执行规则）
 
-当用户出现以下信号时，主动读取并对照 `PLAYBOOK.md`：
+当用户出现以下信号时，主动读取并对照 Obsidian 中的决策手册：
+`/root/obsidian-vault/OpenClaw/Memory/PLAYBOOK.md`
 
 - 犹豫不决（如："要不要做"、"你觉得该不该做"）
 - 讨论新机会/新方向
