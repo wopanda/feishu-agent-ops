@@ -1,0 +1,5 @@
+# Local skill runtime secrets / outputs
+skills/wechat-publisher/config/credentials.json
+skills/wechat-publisher/config/settings.json
+skills/wechat-publisher/config/prompts.user.json
+skills/wechat-publisher/output/

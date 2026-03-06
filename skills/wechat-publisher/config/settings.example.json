@@ -1,0 +1,7 @@
+{
+  "_comment": "这是普通配置模板，可以提交到git",
+  "author": "日新",
+  "output_dir": null,
+  "server_ip": null,
+  "use_custom_prompts": false
+}
