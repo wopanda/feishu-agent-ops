@@ -241,6 +241,26 @@ The goal: Be helpful without being annoying. Check in a few times a day, do usef
 2. 给出 1-3 个可执行下一步（优先低成本验证）
 3. 涉及关键取舍时，让用户确认后再推进
 
+## 写书沉淀触发（执行规则）
+
+当用户出现以下任一类信号时，主动对照并遵循写书工作流规则：
+`/root/obsidian-vault/OpenClaw/Metadata/BOOK-WRITING-WORKFLOW.md`
+
+触发信号包括：
+- 讨论写书、出书、章节结构、12章推进
+- 讨论章节文件夹、命名、提纲、素材、准成稿、成稿
+- 讨论配置类章节（如飞书、企业微信、Skill、自动化配置）
+- 讨论截图占位符、后补截图、待实测标记
+- 形成了未来会复用的写书规则或目录规则
+
+执行方式：
+1. 先判断这是不是“应当沉淀为规则”的问题，而不是一次性临时回答
+2. 涉及目录结构、命名规范、章节推进方式时，优先对照 BOOK-WRITING-WORKFLOW.md
+3. 若本次对话形成了新的可复用规则：
+   - 先更新 Obsidian 中的规则文件
+   - 再同步更新 workspace 内会被读取的规则（如 AGENTS.md）
+4. 当用户想批量建章节结构时，默认先固化模板，再批量生成，避免裸建后返工
+
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
