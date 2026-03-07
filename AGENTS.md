@@ -258,7 +258,7 @@ The goal: Be helpful without being annoying. Check in a few times a day, do usef
 
 执行方式：
 1. 不临场重新发明规则，先对照 BOOK-WRITING-WORKFLOW.md
-2. 默认采用该文件中已经写死的项目路径、章节目录、成稿落点、调研转写规则
+2. 默认采用该文件中已经写死的项目路径、小节子文件夹结构、成稿落点、调研转写规则
 3. 若本次对话形成了新的可复用规则：
    - 先更新这个 Obsidian 规则文件
    - 再同步更新 AGENTS.md
