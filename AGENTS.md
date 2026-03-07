@@ -118,6 +118,24 @@ Reactions are lightweight social signals. Humans use them constantly — they sa
 
 Skills provide your tools. When you need one, check its `SKILL.md`. Keep local notes (camera names, SSH details, voice preferences) in `TOOLS.md`.
 
+## 并行子Agent默认规则
+
+当用户要求“并行执行”“同时做两个任务”“多子任务并发”时，默认采用 **方案B（进度模式）**：
+
+1. 子Agent并行执行各自任务
+2. 子Agent把结果写入文件，不把自动 announce 当作最终交付
+3. 某个子任务先完成时，由主Agent先发一条进度提示
+4. 全部完成后，由主Agent统一汇总结果
+
+### 输出位置规则
+- **用户可查看的最终内容**：优先写入 Obsidian
+- **workspace**：只作为运行中转、临时产物、流程文件，不作为默认交付界面
+
+### 原则
+- 不依赖子Agent自己直接把结果稳定回到聊天前台
+- 最终以主Agent汇总消息为准
+- 若需要长期复用，优先把规则写进 workspace 内会被读取的文档，而不是只写在 Obsidian 里
+
 **🎭 Voice Storytelling:** If you have `sag` (ElevenLabs TTS), use voice for stories, movie summaries, and "storytime" moments! Way more engaging than walls of text. Surprise people with funny voices.
 
 **📝 Platform Formatting:**
