@@ -1,0 +1,29 @@
+{
+  "checks": [
+    {
+      "name": "readme_exists",
+      "path": "README.md",
+      "type": "file_exists"
+    },
+    {
+      "name": "skill_exists",
+      "path": "SKILL.md",
+      "type": "file_exists"
+    },
+    {
+      "name": "install_exists",
+      "path": "install.sh",
+      "type": "file_exists"
+    },
+    {
+      "name": "first_success_path_exists",
+      "path": "references/first-success-path.md",
+      "type": "file_exists"
+    },
+    {
+      "name": "minimal_example_exists",
+      "path": "examples/input-minimal.json",
+      "type": "file_exists"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "action": "inspect",
+  "focus": [
+    "agents",
+    "accounts",
+    "bindings",
+    "workspace",
+    "agentDir",
+    "dmScope"
+  ],
+  "expectations": {
+    "multiAgent": true,
+    "channel": "feishu",
+    "sessionScope": "per-account-channel-peer"
+  }
+}
