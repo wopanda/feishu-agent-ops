@@ -16,18 +16,18 @@
       "type": "file_exists"
     },
     {
-      "name": "inspect_script_exists",
-      "path": "scripts/inspect_openclaw_multi_agent.py",
-      "type": "file_exists"
-    },
-    {
       "name": "first_success_path_exists",
       "path": "references/first-success-path.md",
       "type": "file_exists"
     },
     {
-      "name": "repair_priority_exists",
-      "path": "references/repair-priority.md",
+      "name": "minimal_example_exists",
+      "path": "examples/input-minimal.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "root_cause_example_exists",
+      "path": "examples/input-root-cause-inspect.json",
       "type": "file_exists"
     },
     {
@@ -41,13 +41,18 @@
       "type": "file_exists"
     },
     {
-      "name": "minimal_example_exists",
-      "path": "examples/input-minimal.json",
+      "name": "repair_priority_exists",
+      "path": "references/repair-priority.md",
       "type": "file_exists"
     },
     {
-      "name": "root_cause_example_exists",
-      "path": "examples/input-root-cause-inspect.json",
+      "name": "root_cause_examples_exists",
+      "path": "references/root-cause-examples.md",
+      "type": "file_exists"
+    },
+    {
+      "name": "inspect_script_exists",
+      "path": "scripts/inspect_openclaw_multi_agent.py",
       "type": "file_exists"
     }
   ]
