@@ -24,6 +24,16 @@
       "name": "minimal_example_exists",
       "path": "examples/input-minimal.json",
       "type": "file_exists"
+    },
+    {
+      "name": "root_cause_doc_exists",
+      "path": "docs/root-cause-analysis.md",
+      "type": "file_exists"
+    },
+    {
+      "name": "repair_priority_exists",
+      "path": "references/repair-priority.md",
+      "type": "file_exists"
     }
   ]
 }

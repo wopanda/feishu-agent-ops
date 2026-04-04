@@ -1,0 +1,21 @@
+{
+  "action": "inspect",
+  "mode": "root-cause",
+  "symptoms": [
+    "some bots do not reply",
+    "some replies hit the wrong agent",
+    "multiple bots seem to share session state"
+  ],
+  "focus": [
+    "dmScope",
+    "accounts_vs_bindings",
+    "default_agent_routing",
+    "workspace_agentDir",
+    "plugin_overrides"
+  ],
+  "expect": {
+    "channel": "feishu",
+    "multiAgent": true,
+    "isolation": "per-account-channel-peer"
+  }
+}

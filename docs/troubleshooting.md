@@ -2,6 +2,17 @@
 
 ## 常见问题
 
+### 0. 先别随机排查
+默认先查：
+1. `session.dmScope`
+2. Feishu `accounts` 数 vs `bindings` 数
+3. 默认 Agent / binding 是否抢路由
+4. `workspace / agentDir` 是否齐全
+5. 插件重复覆盖告警
+
+很多“bot 不回复 / 串 Agent / 串会话”并不是单点问题，而是这几层混在一起。
+
+
 ### 1. bot 已创建，但不回复
 优先检查：
 - `channels.feishu.accounts` 是否存在该 `accountId`
@@ -28,5 +39,7 @@
 
 ## 处理原则
 - 先 inspect，再 repair
+- 先修高频根因，再修表象
 - 先最小修复，不大范围重写
+- `dmScope`、默认 Agent、插件层变更属于高影响项，先提示影响
 - 没证据，不说已恢复

@@ -27,6 +27,7 @@
 - `apply`: 备份、patch、建目录、校验
 - `inspect`: 巡检健康度
 - `repair`: 最小修复
+- `root-cause`: 对多 Agent / 多小龙虾异常做一级根因归类与证据收口
 
 ## 首次成功路径
 1. 用户贴出机器人信息
@@ -41,3 +42,12 @@
 - 默认增量 patch，不粗暴重写
 - 没证据，不宣布完成
 - 默认给用户可验证的下一步
+- inspect / repair 必须按固定顺序先查高频根因，不随机排查
+
+## 高优先级真实根因
+当前这类多 Agent 场景，至少要优先覆盖：
+- `session.dmScope` 配错导致串会话
+- `accounts` 与 `bindings` 不闭环
+- 默认 Agent / binding 抢路由
+- `workspace / agentDir` 缺口
+- 插件重复覆盖 / 版本混装
