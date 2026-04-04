@@ -4,6 +4,9 @@ staging/
 *.tmp
 *.bak
 
+docs/environment-evidence-*.json
+docs/environment-evidence-*.txt
+
 # Sensitive files
 credentials*
 *.secret

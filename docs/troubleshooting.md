@@ -2,17 +2,6 @@
 
 ## 常见问题
 
-### 0. 先别随机排查
-默认先查：
-1. `session.dmScope`
-2. Feishu `accounts` 数 vs `bindings` 数
-3. 默认 Agent / binding 是否抢路由
-4. `workspace / agentDir` 是否齐全
-5. 插件重复覆盖告警
-
-很多“bot 不回复 / 串 Agent / 串会话”并不是单点问题，而是这几层混在一起。
-
-
 ### 1. bot 已创建，但不回复
 优先检查：
 - `channels.feishu.accounts` 是否存在该 `accountId`
@@ -37,9 +26,28 @@
 - `agents/<id>/agent` 是否存在
 - 是否只 patch 了配置，没有补目录
 
+## 默认根因排查顺序
+1. `openclaw status`
+2. `session.dmScope`
+3. Feishu `accounts` 数与 `bindings` 数是否闭环
+4. `accountId -> agentId` 是否一一稳定映射
+5. `workspace / agentDir` 是否齐全
+6. 插件重复覆盖告警
+7. 最后再看日志
+
+## 当前现场已识别的高频根因
+
+### 根因 1：多账号飞书仍使用 `per-channel-peer`
+这会让不同机器人下的同一用户仍可能共享会话，导致串小龙虾、串记忆。
+
+### 根因 2：存在误导性的 Feishu `default` 占位账号
+状态里会显示 `default not configured`，容易让人误判成某个机器人少配了，但实际上它可能只是占位对象。
+
+### 根因 3：飞书插件链路重复覆盖
+同时存在 `feishu` 与 `openclaw-lark`，而 CLI 已报 duplicate plugin warning。排障时如果不先钉死真实生效插件，后面很多修法都可能漂。
+
 ## 处理原则
-- 先 inspect，再 repair
-- 先修高频根因，再修表象
+- 先 inspect，再 root-cause，再 repair
 - 先最小修复，不大范围重写
-- `dmScope`、默认 Agent、插件层变更属于高影响项，先提示影响
 - 没证据，不说已恢复
+- 先修高频根因，再碰深层问题

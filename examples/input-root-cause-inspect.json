@@ -1,0 +1,16 @@
+{
+  "action": "inspect",
+  "mode": "root-cause-first",
+  "focus": [
+    "session.dmScope",
+    "accounts_vs_bindings",
+    "account_agent_mapping",
+    "workspace_agentDir",
+    "plugin_warnings"
+  ],
+  "expectations": {
+    "channel": "feishu",
+    "multiAgent": true,
+    "routeClosure": true
+  }
+}

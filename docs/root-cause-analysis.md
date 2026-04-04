@@ -1,110 +1,102 @@
 # Root Cause Analysis
 
-## 这版 skill 为什么对多 Agent / 多小龙虾异常修复不够强
+## 这类 skill 之前为什么“看起来能修”，但不够会修
 
-根因不是“不会写 README”，而是产品重心放偏了。
+根本问题不是没有写到 `repair`。
+而是之前的设计更像：
 
-### 根因 1：过度偏向部署，低估了运行态异常
-第一版更像“接入/扩容说明”，而不是“异常修复作战手册”。
-它会讲：
-- 怎么新增 agent
-- 怎么扩容 bot
-- 怎么写 bindings
+- 配置说明
+- 常见问题清单
+- 修复建议集合
 
-但它没有把真实高频异常的排查顺序写死。
+但还不够像：
 
-### 根因 2：没有把真实环境证据变成默认检查项
-当前环境里已经能看到几个非常典型的多 Agent 风险：
+- **根因诊断器**
+- **证据驱动的修复编排器**
 
-- `session.dmScope` 当前是 `per-channel-peer`
-- Feishu 账号数为 `7`，但 bindings 只有 `6`
-- `openclaw status` 显示 Feishu 为 `accounts 6/7`
-- 存在 `plugin feishu: duplicate plugin id detected` 告警
+这会导致一个典型后果：
 
-这些都属于“多 Agent 真实异常”的高优先级根因，但第一版 skill 还没有把它们变成 inspect / repair 的默认主链。
+> 看起来列了很多修法，但真正遇到“多小龙虾偶发异常、串会话、错路由、部分不回复”时，不能先把问题收束成 1~3 个真正根因。
 
-### 根因 3：repair 设计过于抽象
-第一版只写了“repair 支持最小修复”，但没具体规定：
-- 先查什么
-- 再查什么
-- 哪些是一级根因
-- 哪些是表象
-- 哪些修复可以自动做，哪些必须先停
+## 之前版本的结构性短板
 
-结果是 repair 更像概念，不像可执行 playbook。
+### 1. 先天偏“部署视角”，不是“排障视角”
+前一版更擅长：
+- 新增
+- 扩容
+- 巡检
 
-### 根因 4：没有把“账号层、路由层、会话层、插件层”拆开
-多 Agent 异常常常不是一个点，而是四层问题混在一起：
+但在排障上，更多是：
+- 告诉你检查什么
+- 告诉你可能修什么
 
-1. 账号层：account 存在不存在，配置完整不完整
-2. 路由层：binding 是否覆盖、是否丢失、是否抢路由
-3. 会话层：`dmScope` 是否导致串会话
-4. 插件层：插件冲突、覆盖、版本混装
+还不够擅长：
+- 明确哪个问题是 **P1 根因**
+- 哪些只是症状
+- 修复顺序为什么必须这样排
 
-第一版 skill 没把这四层拆开，所以很容易泛泛而谈。
+### 2. `inspect` 和 `repair` 中间缺了 `root-cause`
+如果只有：
+- `inspect`
+- `repair`
 
----
+那么很容易出现：
+- inspect 看到了很多问题
+- repair 开始逐个补
+- 但没有先判断哪个是总开关
 
-## 当前确认到的高优先级真实风险
+这会让修复动作变成“补洞”，不是“打掉主因”。
 
-### 风险 1：`dmScope` 不适合多账号隔离
-当前环境：
-- `session.dmScope = per-channel-peer`
+### 3. 没把高频根因固化成默认优先级
+多 Agent / 多飞书账号环境里，高频主因往往不是随机的。
 
-这意味着：
-- 同一 channel 下不同账号可能没有做到完全隔离
-- 对“多飞书机器人 -> 多 Agent”场景来说，不是最稳妥配置
+通常优先看：
+1. `session.dmScope`
+2. `accounts ↔ bindings` 是否闭环
+3. 插件链路是否重复覆盖
+4. `workspace / agentDir` 是否缺失
 
-多账号场景更推荐：
-- `per-account-channel-peer`
+如果 skill 不把这套优先级写死，它就会显得“懂很多，但不够会判断轻重”。
 
-### 风险 2：账号数与 bindings 数不一致
-当前环境：
-- Feishu accounts: `7`
-- bindings: `6`
-- `openclaw status` 显示：`accounts 6/7`
+## 当前版本的修正思路
 
-这意味着至少有一个账号没有形成完整路由闭环。
+### 1. 新增 `root-cause`
+让技能先给：
+- 表面症状
+- 根因候选
+- 证据
+- 修复优先级
+- 不修会继续发生什么
 
-### 风险 3：插件重复覆盖
-当前环境告警：
-- `plugin feishu: duplicate plugin id detected`
-- `plugin qqbot: duplicate plugin id detected`
+### 2. 增加 inspect script
+通过 `scripts/inspect_openclaw_multi_agent.py`，先把现场压缩成几条高频根因，而不是直接给一堆散点检查项。
 
-这意味着：
-- 运行时插件来源可能存在覆盖关系
-- 渠道行为可能不是用户直觉中的“官方默认那份”
-- 多 Agent 故障排查时，不能只看 `openclaw.json`，还要看插件层是否被覆盖
+### 3. 把 repair 变成“后手”
+默认顺序改为：
 
----
+`inspect -> root-cause -> repair`
 
-## 修复版 skill 应该如何调整
+而不是：
 
-### 1. 把 inspect 变成“证据优先的固定顺序”
-默认先查：
-1. `openclaw status`
-2. `session.dmScope`
-3. Feishu accounts 数 vs bindings 数
-4. 默认 Agent / accountId / agentId 映射
-5. workspace / agentDir 完整性
-6. 插件重复与覆盖告警
-7. 再看日志
+`inspect -> repair`
 
-### 2. 把 repair 变成“分层修复”
-按顺序修：
-1. 先修配置缺口
-2. 再修路由错配
-3. 再修会话隔离
-4. 再修目录缺失
-5. 最后才碰插件层和更深问题
+## 当前真实环境中已识别的高频根因示例
 
-### 3. 把高频根因写进首页
-至少要让用户一眼知道：
-- `dmScope` 是高频根因
-- `accounts != bindings` 是高频根因
-- 插件重复覆盖是高频根因
+### 根因 1：`session.dmScope` 仍是 `per-channel-peer`
+这会导致多账号飞书下的会话隔离不够细，出现串小龙虾 / 串上下文风险。
 
-### 4. 把“自动修”和“先确认再修”分开
-例如：
-- 自动可修：缺少 binding、缺少目录、缺少 agentDir
-- 先确认再修：修改 `dmScope`、调整默认 Agent、处理插件层
+### 根因 2：存在误导性的 `accounts.default` 占位账号
+它不一定是故障源，但会让 status / channels 输出在排障时产生错误心智。
+
+### 根因 3：飞书插件链路重复覆盖
+当内置插件与全局插件并存，且 CLI 已经提示 duplicate plugin warning 时，后续很多现象会变得难以归因。
+
+## 结论
+这个 skill 要真正“会修”，不是继续往 README 里加问题列表，
+而是必须先把：
+
+> **根因优先级 + 证据链 + 修复顺序**
+
+做成默认行为。
+
+这也是本次优化的核心。

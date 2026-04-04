@@ -1,21 +1,17 @@
 {
-  "action": "inspect",
-  "mode": "root-cause",
+  "action": "root-cause",
+  "configPath": "~/.openclaw/openclaw.json",
   "symptoms": [
-    "some bots do not reply",
-    "some replies hit the wrong agent",
-    "multiple bots seem to share session state"
+    "some bots occasionally stop replying",
+    "some bots reply as the wrong agent",
+    "different bots seem to share conversation context"
   ],
   "focus": [
     "dmScope",
     "accounts_vs_bindings",
-    "default_agent_routing",
-    "workspace_agentDir",
-    "plugin_overrides"
+    "plugin_stack",
+    "workspace",
+    "agentDir"
   ],
-  "expect": {
-    "channel": "feishu",
-    "multiAgent": true,
-    "isolation": "per-account-channel-peer"
-  }
+  "repairAfterDiagnosis": false
 }

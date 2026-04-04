@@ -1,10 +1,10 @@
 # Design V1
 
 ## 定位
-`feishu-agent-ops` 是一个面向 OpenClaw + 飞书场景的多 Agent 接入 / 扩容 / 巡检 / 修复 skill。
+`feishu-agent-ops` 是一个面向 OpenClaw + 飞书场景的多 Agent 接入 / 扩容 / 巡检 / 根因排查 / 修复 skill。
 
 它不负责替用户去飞书开放平台创建机器人。
-它负责把用户已经拿到的机器人信息，整理成 OpenClaw 可运行的多 Agent 系统。
+它负责把用户已经拿到的机器人信息，整理成 OpenClaw 可运行的多 Agent 系统；当系统反复异常时，它还要先找根因，而不是只做表面修补。
 
 ## V1 范围
 
@@ -12,8 +12,10 @@
 - 从 1 个 Agent 扩到多个
 - 从多个 Agent 继续扩容
 - 巡检 `agents / accounts / bindings / workspace / agentDir / dmScope`
+- 根因排查多 Agent / 多小龙虾反复异常
 - 修复常见配置异常
 - 默认先 `plan`，后 `apply`
+- 遇到异常先 `root-cause`，再决定是否 `repair`
 
 ### 暂不支持
 - 自动创建飞书机器人
@@ -26,15 +28,15 @@
 - `plan`: 只分析，不落地
 - `apply`: 备份、patch、建目录、校验
 - `inspect`: 巡检健康度
+- `root-cause`: 先定位根因，产出证据和修复优先级
 - `repair`: 最小修复
-- `root-cause`: 对多 Agent / 多小龙虾异常做一级根因归类与证据收口
 
 ## 首次成功路径
-1. 用户贴出机器人信息
+1. 用户贴出机器人信息或异常症状
 2. skill 识别当前现状
-3. 先输出规划预览
+3. 先输出规划预览或根因诊断
 4. 用户确认后再执行
-5. 至少 1 个新 bot 完成真实回复验证
+5. 至少 1 个新 bot 完成真实回复验证，或异常链路得到可验证解释
 
 ## 设计原则
 - 少填、少想、可控、安心
@@ -42,12 +44,11 @@
 - 默认增量 patch，不粗暴重写
 - 没证据，不宣布完成
 - 默认给用户可验证的下一步
-- inspect / repair 必须按固定顺序先查高频根因，不随机排查
+- 遇到反复异常，优先找根因，不直接堆修补动作
 
-## 高优先级真实根因
-当前这类多 Agent 场景，至少要优先覆盖：
-- `session.dmScope` 配错导致串会话
-- `accounts` 与 `bindings` 不闭环
-- 默认 Agent / binding 抢路由
-- `workspace / agentDir` 缺口
-- 插件重复覆盖 / 版本混装
+## 当前识别出的高频根因
+基于当前 OpenClaw 现场排查，高频问题优先看：
+
+1. `session.dmScope` 仍为 `per-channel-peer`，不适合多账号飞书隔离
+2. Feishu 存在 `default` 占位账号，但并未真正配置顶层默认账号，状态输出易误导
+3. 同时启用 `feishu` 与 `openclaw-lark`，出现 duplicate plugin warning，排障时不易判断哪条链路真正生效
