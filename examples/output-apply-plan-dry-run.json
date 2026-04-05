@@ -3,7 +3,7 @@
   "configPath": "~/.openclaw/openclaw.json",
   "backupPlan": {
     "source": "~/.openclaw/openclaw.json",
-    "backup": "~/.openclaw/openclaw.json.bak-20260405-030000-feishu-agent-ops"
+    "backup": "~/.openclaw/openclaw.json.bak-20260405-043632-feishu-agent-ops"
   },
   "summary": {
     "addAccounts": 3,
@@ -16,7 +16,7 @@
       "step": 1,
       "action": "backup-config",
       "target": "~/.openclaw/openclaw.json",
-      "output": "~/.openclaw/openclaw.json.bak-20260405-030000-feishu-agent-ops",
+      "output": "~/.openclaw/openclaw.json.bak-20260405-043632-feishu-agent-ops",
       "requiresConfirmation": false
     },
     {
@@ -25,6 +25,25 @@
       "target": "~/.openclaw/openclaw.json",
       "count": 9,
       "requiresConfirmation": true
+    },
+    {
+      "step": 3,
+      "action": "prepare-directories",
+      "count": 6,
+      "requiresConfirmation": false
+    },
+    {
+      "step": 4,
+      "action": "apply-config-patch",
+      "target": "~/.openclaw/openclaw.json",
+      "count": 9,
+      "requiresConfirmation": true
+    },
+    {
+      "step": 5,
+      "action": "verify-after-apply",
+      "target": "at least one target bot response + config sanity",
+      "requiresConfirmation": false
     }
   ],
   "warnings": []
