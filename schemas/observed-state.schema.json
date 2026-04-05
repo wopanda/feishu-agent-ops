@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/feishu-agent-ops/observed-state.schema.json",
+  "title": "Feishu Agent Ops Observed State",
+  "type": "object",
+  "required": ["config", "session", "feishu", "agents", "bindings"],
+  "properties": {
+    "config": { "type": "string" },
+    "session": {
+      "type": "object",
+      "properties": {
+        "dmScope": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "feishu": {
+      "type": "object",
+      "required": ["topLevelKeys", "accounts", "bindings"],
+      "properties": {
+        "topLevelKeys": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "accounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/account"
+          }
+        },
+        "bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/binding"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "agents": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/agent"
+      }
+    },
+    "bindings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/binding"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "$defs": {
+    "account": {
+      "type": "object",
+      "properties": {
+        "accountId": { "type": "string" },
+        "botName": { "type": ["string", "null"] },
+        "enabled": { "type": "boolean" },
+        "hasCredentials": { "type": "boolean" },
+        "dmPolicy": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "agent": {
+      "type": "object",
+      "properties": {
+        "id": { "type": ["string", "null"] },
+        "workspace": { "type": ["string", "null"] },
+        "workspaceExists": { "type": "boolean" },
+        "agentDir": { "type": ["string", "null"] },
+        "agentDirExists": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "binding": {
+      "type": "object",
+      "properties": {
+        "agentId": { "type": ["string", "null"] },
+        "accountId": { "type": ["string", "null"] },
+        "routingKind": { "type": "string", "enum": ["account", "group", "other"] },
+        "channel": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

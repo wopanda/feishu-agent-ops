@@ -79,6 +79,7 @@ python3 scripts/scan_openclaw_compat.py --config ~/.openclaw/openclaw.json
 虽然前台改成场景入口，但后台仍然会调用这些阶段：
 - `compat-scan`
 - `normalize-request`
+- `scan-current-state`
 - `plan`
 - `apply`
 - `inspect`
@@ -109,6 +110,29 @@ python3 scripts/normalize_request.py --input examples/input-minimal.json --prett
 
 归一化输出样例：
 - `examples/output-normalized-bootstrap.json`
+
+## 当前状态扫描（新增）
+
+为了让 plan / diagnose / repair 都基于同一份现场事实，后台新增：
+- `schemas/observed-state.schema.json`
+- `scripts/scan_current_state.py`
+
+它会统一输出：
+- 当前 `session.dmScope`
+- `channels.feishu` 顶层字段
+- 账号列表与凭据存在性
+- Feishu bindings 形态
+- agents 的 `workspace / agentDir` 是否存在
+- warnings
+
+示例：
+
+```bash
+python3 scripts/scan_current_state.py --config ~/.openclaw/openclaw.json --pretty
+```
+
+输出样例：
+- `examples/output-observed-state.json`
 
 ## Root-Cause-First（根因优先）规则
 
