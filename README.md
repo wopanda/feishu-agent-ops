@@ -234,6 +234,7 @@ python3 scripts/apply_real.py \
 - `scripts/build_desired_state.py`：从 request + observed 生成目标预览
 - `scripts/validate_plan.py`：对目标预览做静态校验
 - `schemas/patch-preview.schema.json`：拟变更预览结构
+- `schemas/apply-result.schema.json`：最小 apply 执行结果结构
 - `scripts/generate_patch.py`：把目标预览翻成 json patch + 目录操作预览
 - `scripts/apply_patch.py`：把 patch preview 翻成 dry-run 执行计划
 - `scripts/verify_setup.py`：把目标预览翻成落地后验证清单
@@ -272,6 +273,9 @@ python3 scripts/apply_real.py --patch-preview examples/output-patch-preview.json
 
 落地后验证清单样例见：
 - `examples/output-verify-setup-checklist.json`
+
+最小 apply 执行结果样例见：
+- `examples/output-apply-result-ready.json`
 
 ---
 

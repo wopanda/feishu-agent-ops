@@ -1,0 +1,14 @@
+{
+  "status": "ready",
+  "configPath": "/tmp/openclaw-apply-real-test.json",
+  "backupPath": "/tmp/openclaw-apply-real-test.json.bak-20260405-034630-feishu-agent-ops",
+  "summary": {
+    "jsonOpsApplied": 1,
+    "filesystemOpsApplied": 1,
+    "configExistedBefore": true
+  },
+  "createdPaths": [
+    "/root/.openclaw/workspace-manager"
+  ],
+  "warnings": []
+}

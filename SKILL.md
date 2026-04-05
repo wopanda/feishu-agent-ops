@@ -287,6 +287,7 @@ python3 scripts/normalize_request.py --input examples/input-minimal.json --prett
 
 为了开始把 preview 接到真实落地入口，后台新增：
 - `scripts/apply_real.py`
+- `schemas/apply-result.schema.json`
 
 它当前只支持最小范围：
 - `jsonPatchPreview` 里的 `add`
@@ -295,6 +296,9 @@ python3 scripts/normalize_request.py --input examples/input-minimal.json --prett
 并支持：
 - `--config` 覆盖目标配置路径
 - `--execute` 真正执行写入
+
+输出样例：
+- `examples/output-apply-result-ready.json`
 
 ## Root-Cause-First（根因优先）规则
 

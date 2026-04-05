@@ -36,6 +36,11 @@
       "type": "file_exists"
     },
     {
+      "name": "apply_result_schema_exists",
+      "path": "schemas/apply-result.schema.json",
+      "type": "file_exists"
+    },
+    {
       "name": "normalize_request_script_exists",
       "path": "scripts/normalize_request.py",
       "type": "file_exists"
@@ -118,6 +123,11 @@
     {
       "name": "verify_setup_checklist_example_exists",
       "path": "examples/output-verify-setup-checklist.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "apply_result_ready_example_exists",
+      "path": "examples/output-apply-result-ready.json",
       "type": "file_exists"
     },
     {

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/feishu-agent-ops/apply-result.schema.json",
+  "title": "Feishu Agent Ops Apply Result",
+  "type": "object",
+  "required": ["status", "configPath", "summary", "createdPaths", "warnings"],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["ready", "applied"]
+    },
+    "configPath": {
+      "type": "string"
+    },
+    "backupPath": {
+      "type": ["string", "null"]
+    },
+    "summary": {
+      "type": "object",
+      "required": ["jsonOpsApplied", "filesystemOpsApplied", "configExistedBefore"],
+      "properties": {
+        "jsonOpsApplied": { "type": "integer", "minimum": 0 },
+        "filesystemOpsApplied": { "type": "integer", "minimum": 0 },
+        "configExistedBefore": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "createdPaths": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": true
+}
