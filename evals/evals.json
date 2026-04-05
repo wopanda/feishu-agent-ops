@@ -61,6 +61,11 @@
       "type": "file_exists"
     },
     {
+      "name": "apply_patch_script_exists",
+      "path": "scripts/apply_patch.py",
+      "type": "file_exists"
+    },
+    {
       "name": "first_success_path_exists",
       "path": "references/first-success-path.md",
       "type": "file_exists"
@@ -93,6 +98,11 @@
     {
       "name": "patch_preview_example_exists",
       "path": "examples/output-patch-preview.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "apply_plan_dry_run_example_exists",
+      "path": "examples/output-apply-plan-dry-run.json",
       "type": "file_exists"
     },
     {

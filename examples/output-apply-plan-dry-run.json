@@ -1,0 +1,31 @@
+{
+  "mode": "dry-run",
+  "configPath": "~/.openclaw/openclaw.json",
+  "backupPlan": {
+    "source": "~/.openclaw/openclaw.json",
+    "backup": "~/.openclaw/openclaw.json.bak-20260405-030000-feishu-agent-ops"
+  },
+  "summary": {
+    "addAccounts": 3,
+    "addBindings": 3,
+    "addAgents": 3,
+    "mkdirCount": 6
+  },
+  "steps": [
+    {
+      "step": 1,
+      "action": "backup-config",
+      "target": "~/.openclaw/openclaw.json",
+      "output": "~/.openclaw/openclaw.json.bak-20260405-030000-feishu-agent-ops",
+      "requiresConfirmation": false
+    },
+    {
+      "step": 2,
+      "action": "review-json-patch",
+      "target": "~/.openclaw/openclaw.json",
+      "count": 9,
+      "requiresConfirmation": true
+    }
+  ],
+  "warnings": []
+}

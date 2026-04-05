@@ -135,7 +135,16 @@ python3 scripts/generate_patch.py \
   --pretty
 ```
 
-### 第 8 步：确认后再 apply / repair
+### 第 8 步：生成 dry-run 执行计划
+在真正写配置前，先把 patch preview 翻成 dry-run apply plan：
+
+```bash
+python3 scripts/apply_patch.py \
+  --patch-preview examples/output-patch-preview.json \
+  --pretty
+```
+
+### 第 9 步：确认后再真正 apply / repair
 - 先备份
 - 再 patch
 - 最后验证
@@ -171,6 +180,7 @@ python3 scripts/generate_patch.py \
 - `build-desired-state`
 - `validate-plan`
 - `generate-patch`
+- `apply-patch-dry-run`
 - `plan`
 - `apply`
 - `inspect`
@@ -199,6 +209,7 @@ python3 scripts/generate_patch.py \
 - `scripts/validate_plan.py`：对目标预览做静态校验
 - `schemas/patch-preview.schema.json`：拟变更预览结构
 - `scripts/generate_patch.py`：把目标预览翻成 json patch + 目录操作预览
+- `scripts/apply_patch.py`：把 patch preview 翻成 dry-run 执行计划
 
 示例：
 
@@ -208,6 +219,7 @@ python3 scripts/scan_current_state.py --config ~/.openclaw/openclaw.json --prett
 python3 scripts/build_desired_state.py --request examples/output-normalized-bootstrap.json --observed examples/output-observed-state.json --pretty
 python3 scripts/validate_plan.py --request examples/output-normalized-bootstrap.json --desired examples/output-desired-state-preview.json --pretty
 python3 scripts/generate_patch.py --desired examples/output-desired-state-preview.json --pretty
+python3 scripts/apply_patch.py --patch-preview examples/output-patch-preview.json --pretty
 ```
 
 归一化输出样例见：
@@ -225,8 +237,8 @@ python3 scripts/generate_patch.py --desired examples/output-desired-state-previe
 拟变更预览输出样例见：
 - `examples/output-patch-preview.json`
 
-如果你要验证“真正从空白单体开始 bootstrap”的情况，还可以看：
-- `examples/observed-state-bootstrap-empty.json`
+执行计划 dry-run 输出样例见：
+- `examples/output-apply-plan-dry-run.json`
 
 ---
 

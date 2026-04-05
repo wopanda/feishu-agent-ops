@@ -102,7 +102,16 @@ python3 scripts/generate_patch.py \
   --pretty
 ```
 
-### 第 8 步：确认后再 apply / repair
+### 第 8 步：生成 dry-run 执行计划
+在真正写配置前，先把 patch preview 翻成 dry-run apply plan：
+
+```bash
+python3 scripts/apply_patch.py \
+  --patch-preview examples/output-patch-preview.json \
+  --pretty
+```
+
+### 第 9 步：确认后再真正 apply / repair
 - 变更前先备份
 - 变更后强制验证
 
@@ -115,6 +124,7 @@ python3 scripts/generate_patch.py \
 - `build-desired-state`
 - `validate-plan`
 - `generate-patch`
+- `apply-patch-dry-run`
 - `plan`
 - `apply`
 - `inspect`
@@ -217,6 +227,20 @@ python3 scripts/normalize_request.py --input examples/input-minimal.json --prett
 
 输出样例：
 - `examples/output-patch-preview.json`
+
+## dry-run 执行计划（新增）
+
+为了在真正 apply 前把执行顺序和确认点说明白，后台新增：
+- `scripts/apply_patch.py`
+
+它当前不会真正写配置，只会输出：
+- 备份计划
+- 执行步骤顺序
+- 哪些步骤需要确认
+- 最后怎么验证
+
+输出样例：
+- `examples/output-apply-plan-dry-run.json`
 
 ## Root-Cause-First（根因优先）规则
 
