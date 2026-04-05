@@ -5,7 +5,8 @@
   "summary": {
     "jsonOpsApplied": 9,
     "filesystemOpsApplied": 6,
-    "configExistedBefore": true
+    "configExistedBefore": true,
+    "resolvedSecretsApplied": 0
   },
   "createdPaths": [
     "/root/.openclaw/workspace-manager",

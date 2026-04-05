@@ -41,6 +41,11 @@
       "type": "file_exists"
     },
     {
+      "name": "apply_secrets_schema_exists",
+      "path": "schemas/apply-secrets.schema.json",
+      "type": "file_exists"
+    },
+    {
       "name": "normalize_request_script_exists",
       "path": "scripts/normalize_request.py",
       "type": "file_exists"
@@ -138,6 +143,11 @@
     {
       "name": "apply_result_ready_example_exists",
       "path": "examples/output-apply-result-ready.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "apply_secrets_input_example_exists",
+      "path": "examples/input-apply-secrets.json",
       "type": "file_exists"
     },
     {

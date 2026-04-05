@@ -17,11 +17,12 @@
     },
     "summary": {
       "type": "object",
-      "required": ["jsonOpsApplied", "filesystemOpsApplied", "configExistedBefore"],
+      "required": ["jsonOpsApplied", "filesystemOpsApplied", "configExistedBefore", "resolvedSecretsApplied"],
       "properties": {
         "jsonOpsApplied": { "type": "integer", "minimum": 0 },
         "filesystemOpsApplied": { "type": "integer", "minimum": 0 },
-        "configExistedBefore": { "type": "boolean" }
+        "configExistedBefore": { "type": "boolean" },
+        "resolvedSecretsApplied": { "type": "integer", "minimum": 0 }
       },
       "additionalProperties": true
     },
