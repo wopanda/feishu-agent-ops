@@ -146,6 +146,11 @@
       "type": "file_exists"
     },
     {
+      "name": "apply_result_applied_with_secrets_example_exists",
+      "path": "examples/output-apply-result-applied-with-secrets.json",
+      "type": "file_exists"
+    },
+    {
       "name": "apply_secrets_input_example_exists",
       "path": "examples/input-apply-secrets.json",
       "type": "file_exists"

@@ -318,6 +318,7 @@ python3 scripts/normalize_request.py --input examples/input-minimal.json --prett
 
 输出样例：
 - `examples/output-apply-result-ready.json`
+- `examples/output-apply-result-applied-with-secrets.json`
 
 real apply secret map 输入样例：
 - `examples/input-apply-secrets.json`

@@ -297,6 +297,7 @@ python3 scripts/apply_real.py --patch-preview examples/output-patch-preview-full
 
 最小 apply 执行结果样例见：
 - `examples/output-apply-result-ready.json`
+- `examples/output-apply-result-applied-with-secrets.json`
 
 real apply secret map 输入样例见：
 - `examples/input-apply-secrets.json`
