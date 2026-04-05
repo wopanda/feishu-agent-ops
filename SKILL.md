@@ -163,6 +163,9 @@ python3 scripts/normalize_request.py --input examples/input-minimal.json --prett
 输出样例：
 - `examples/output-desired-state-preview.json`
 
+如果要验证“空白 bootstrap 现场”的目标预览，可搭配：
+- `examples/observed-state-bootstrap-empty.json`
+
 ## Root-Cause-First（根因优先）规则
 
 在 `diagnose` 场景中，必须按下面顺序排查：

@@ -71,6 +71,11 @@
       "type": "file_exists"
     },
     {
+      "name": "desired_state_empty_bootstrap_observed_exists",
+      "path": "examples/observed-state-bootstrap-empty.json",
+      "type": "file_exists"
+    },
+    {
       "name": "root_cause_example_exists",
       "path": "examples/input-root-cause-inspect.json",
       "type": "file_exists"

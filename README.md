@@ -193,6 +193,9 @@ python3 scripts/build_desired_state.py --request examples/output-normalized-boot
 目标预览输出样例见：
 - `examples/output-desired-state-preview.json`
 
+如果你要验证“真正从空白单体开始 bootstrap”的情况，还可以看：
+- `examples/observed-state-bootstrap-empty.json`
+
 ---
 
 ## 推荐输入方式
@@ -220,6 +223,9 @@ python3 scripts/build_desired_state.py --request examples/output-normalized-boot
 
 目标预览输出样例见：
 - `examples/output-desired-state-preview.json`
+
+空白 bootstrap 现场样例见：
+- `examples/observed-state-bootstrap-empty.json`
 
 ---
 

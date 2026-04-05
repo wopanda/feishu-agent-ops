@@ -1,0 +1,17 @@
+{
+  "config": "~/.openclaw/openclaw.json",
+  "session": {
+    "dmScope": "per-account-channel-peer"
+  },
+  "feishu": {
+    "topLevelKeys": [
+      "enabled",
+      "accounts"
+    ],
+    "accounts": [],
+    "bindings": []
+  },
+  "agents": [],
+  "bindings": [],
+  "warnings": []
+}
