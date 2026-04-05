@@ -64,6 +64,21 @@
       "name": "compat_scan_example_exists",
       "path": "examples/output-compat-scan.json",
       "type": "file_exists"
+    },
+    {
+      "name": "scenario_bootstrap_example_exists",
+      "path": "examples/scenario-bootstrap.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "scenario_expand_example_exists",
+      "path": "examples/scenario-expand.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "scenario_diagnose_example_exists",
+      "path": "examples/scenario-diagnose.json",
+      "type": "file_exists"
     }
   ]
 }

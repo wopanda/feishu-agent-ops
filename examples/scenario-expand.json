@@ -1,0 +1,17 @@
+{
+  "scenario": "expand",
+  "goal": "add_more_agents",
+  "routingMode": "account",
+  "agentMode": "bind-existing",
+  "existingAgents": ["manager", "research", "writer"],
+  "bots": [
+    {
+      "accountId": "dev",
+      "botName": "开发机器人",
+      "appId": "cli_xxx_dev",
+      "appSecret": "secret_dev",
+      "agentId": "dev",
+      "roleName": "开发"
+    }
+  ]
+}

@@ -5,202 +5,187 @@
 
 ---
 
-## 现在这个 skill 真正解决什么
+## 这版先改什么
 
-它不只是告诉你“怎么配”。
-它更重要的价值是：
+这版开始把前台心智从 **action-first** 改成 **scenario-first**。
 
-1. 先识别当前 OpenClaw 多 Agent / 多飞书账号现状
-2. 先判断当前到底是哪个 OpenClaw 版本、哪条 Feishu/Lark 插件链、字段结构是否漂移
-3. 找出反复异常的根本原因
-4. 再决定该怎么修，而不是先拍脑袋改配置
+也就是说，用户不用先理解：
+- `plan`
+- `apply`
+- `inspect`
+- `repair`
 
-如果你现在的问题是：
-- 多个小龙虾偶尔串会话
-- 某个机器人不回复
+而是先判断自己属于哪种场景：
+
+1. **一只龙虾变多只**
+2. **多只龙虾继续扩更多**
+3. **多只龙虾出了问题**
+
+动作还在，但它们退到后台，作为内部执行阶段。
+
+---
+
+## 三个主场景
+
+### 场景 A：一只龙虾变多只
+适合：
+- 现在只有 1 个 bot / 1 个 Agent
+- 想扩成多个专职机器人
+- 希望先看规划，再落地
+
+你可以直接说：
+
+```text
+我现在只有一只龙虾，想扩成多只。先帮我判断该怎么拆，再给我预览。
+```
+
+### 场景 B：多只龙虾继续扩更多
+适合：
+- 已经有多 Agent / 多 bot
+- 想继续增量扩容
+- 不想覆盖旧配置
+
+你可以直接说：
+
+```text
+我已经有多只龙虾了，下面是新机器人的信息，帮我增量扩进去，不要覆盖旧配置。
+```
+
+### 场景 C：多只龙虾出了问题
+适合：
+- 串会话
+- 某个 bot 不回复
 - 路由偶尔跑错
-- 配置看起来都在，但就是不稳定
-- 升级后字段名字/插件链路变了，担心修偏
+- 升级后字段/插件链路变了，担心修偏
 
-那就不要只做 `repair`，先做 **compat scan + root cause**。
-
----
-
-## 最简单的开始方式
-
-如果你是要新增或扩容，直接把机器人信息贴给我，我会先：
-
-1. 识别你当前的 OpenClaw 现状
-2. 必要时先跑一轮 **compat scan**，判断当前版本 / 插件 / 字段形态
-3. 给你一份多 Agent 规划预览
-4. 等你确认后再落地
-5. 最后带你完成第一次真实验证
-
-如果你是要排异常，直接说：
+你可以直接说：
 
 ```text
-帮我先扫描一下当前 OpenClaw + Feishu 插件兼容形态，再找这套多 Agent / 多小龙虾异常的根本原因，不要只给表面修法。
-```
-
-你不需要先手改一大堆 JSON。
-
----
-
-## 你只需要准备
-
-每个飞书机器人至少提供：
-
-- `accountId`
-- `appId`
-- `appSecret`
-- `botName`
-
-如果是根因排查，最好还能提供：
-- 当前 `openclaw.json` 路径
-- 异常现象
-- 哪几个 bot 受影响
-
----
-
-## 你可以直接这样说
-
-```text
-我已经创建好了这批飞书机器人，帮我接成 OpenClaw 多 Agent，先给我预览，再执行。
-```
-
-```text
-我现在已经有几个 Agent 了，下面是新机器人的信息，帮我增量扩进去，不要覆盖旧配置。
-```
-
-```text
-帮我检查一下当前这套飞书多 Agent 配置有没有问题。
-```
-
-```text
-帮我找一下这套多 Agent / 多小龙虾异常的根本原因，不要只给表面修法。
+这套多龙虾现在有异常，先帮我判断当前环境，再找根因，不要直接硬修。
 ```
 
 ---
 
-## 兼容探测优先（新增）
+## 渐进式披露怎么做
 
-当满足任一条件时，默认先跑：
+### 第 1 步：先识别场景
+先判断你属于：
+- bootstrap（1 → N）
+- expand（N → N+M）
+- diagnose（N 出问题）
+
+### 第 2 步：只问最少问题
+
+#### bootstrap / expand 默认只问：
+- 绑定已有 Agent，还是新建 Agent？
+- 账户级绑定，还是群聊级绑定？
+- 新 bot 的基本信息是什么？
+
+#### diagnose 默认只问：
+- 异常现象是什么？
+- 哪几个 bot 受影响？
+- 是否允许先做只读扫描？
+
+### 第 3 步：必要时先做兼容探测
+满足这些情况就先跑 compat scan：
+- 不确定当前 OpenClaw 版本
+- 不确定当前生效的是旧 `feishu` 还是官方 `openclaw-lark`
+- 怀疑升级后字段结构变了
+- 现场存在插件覆盖、历史残留、多版本混用
+
+命令：
 
 ```bash
 python3 scripts/scan_openclaw_compat.py --config ~/.openclaw/openclaw.json
 ```
 
-适用条件：
-- 不确定当前 OpenClaw 是哪个版本
-- 不确定当前生效的是旧 `feishu` 还是官方 `openclaw-lark`
-- 怀疑升级后字段结构变了
-- 现场存在历史残留 / 多版本混用 / 插件覆盖告警
+### 第 4 步：先给预览，不直接改
+- bootstrap / expand：给目标结构预览、增量 diff、验证路径
+- diagnose：给根因诊断、修复优先级、风险说明
 
-这个扫描器会输出：
-- OpenClaw 版本
-- 当前生效的 Feishu/Lark 插件链
-- 插件版本
-- `session.dmScope`
-- `channels.feishu` 顶层字段形态
-- `accounts / bindings` 数量
-- `compatMode`（`old-feishu | official-lark | mixed-transition | broken-state`）
-- 风险标记
-
-示例输出见：
-- `examples/output-compat-scan.json`
+### 第 5 步：确认后再 apply / repair
+- 先备份
+- 再 patch
+- 最后验证
 
 ---
 
 ## 你会得到什么
 
-- 多 Agent 接入规划预览
-- 自动生成的 `accounts + bindings` 方案
-- 建议的 `workspace / agentDir` 结构
-- 兼容扫描结果（版本 / 插件 / 字段形态）
+### bootstrap / expand
+- 建议的 bot → agent 映射
+- 建议的 `accounts + bindings`
+- 建议的 `workspace / agentDir`
+- 增量变更预览
+- 第一次成功验证清单
+
+### diagnose
+- 兼容探测结果
 - 根因诊断结论
-- 修复优先级建议
-- 部署结果、巡检结果和下一步测试建议
+- 修复优先级
+- 最小修复建议
+- 修后验证路径
 
 ---
 
-## 第一次成功是什么
+## 后台动作仍然保留
 
-第一次成功不是“改完配置”，而是：
+虽然前台改成按场景进入，但后台仍然会用这些动作：
 
-- 生成正确的规划预览
-- 或者给出带证据的根因诊断
-- 安全落地配置
-- 至少 1 个新 bot 完成真实回复验证
+- `compat-scan`
+- `plan`
+- `apply`
+- `inspect`
+- `root-cause`
+- `repair`
 
----
+只是现在的顺序变成：
 
-## 支持的 5 类动作
+- **先判场景**
+- **再决定动作链**
 
-### 1. `plan`
-只分析，不落地。
-
-### 2. `apply`
-正式执行新增或扩容。
-
-### 3. `inspect`
-巡检现有多 Agent 配置。
-
-### 4. `root-cause`
-先找根本原因，再决定修不修。
-
-### 5. `repair`
-修复常见接入异常。
-
-### 6. `compat-scan`
-先识别 OpenClaw 版本、Feishu/Lark 插件链和字段结构偏差，避免按错版本修配置。
+而不是让用户自己先选动作。
 
 ---
 
-## 当前这个 skill 默认先盯的 3 个高频根因
+## 推荐输入方式
+
+### 场景 A：bootstrap
+见：
+- `examples/scenario-bootstrap.json`
+
+### 场景 B：expand
+见：
+- `examples/scenario-expand.json`
+
+### 场景 C：diagnose
+见：
+- `examples/scenario-diagnose.json`
+
+兼容探测输出样例见：
+- `examples/output-compat-scan.json`
+
+---
+
+## 当前默认先盯的高频风险
 
 1. `session.dmScope` 不适合多账号隔离  
-2. Feishu `accounts` 与 `bindings` 没有真正闭环  
-3. 飞书插件链路重复覆盖、实际生效实现不清楚  
+2. `accounts` 与 `bindings` 没有真正闭环  
+3. 插件链路重复覆盖、实际生效实现不清楚  
 4. OpenClaw 版本 / 插件版本 / 字段结构已经漂移，但还按旧心智在修
 
 ---
 
-## 最小输入示例
+## 下一阶段再做什么
 
-```json
-{
-  "action": "plan",
-  "defaultModel": "huandutech/gpt-5.4-high",
-  "bots": [
-    {
-      "accountId": "manager",
-      "botName": "总控机器人",
-      "appId": "cli_xxx_manager",
-      "appSecret": "secret_manager",
-      "roleName": "总控",
-      "isDefault": true
-    },
-    {
-      "accountId": "research",
-      "botName": "调研机器人",
-      "appId": "cli_xxx_research",
-      "appSecret": "secret_research",
-      "roleName": "调研"
-    }
-  ]
-}
-```
+下一阶段会继续把后台也做成更确定性的结构：
+- request 归一化
+- current state 扫描
+- desired state 构造
+- plan 校验
+- patch 生成
+- apply / verify 分离
 
----
+一句话：
 
-## 后面再看什么
-
-如果你第一次已经跑通，再继续看：
-
-- 输入格式扩展
-- 命名规则
-- `workspace / agentDir` 约定
-- `bindings` 与 `dmScope` 说明
-- 巡检与根因排查脚本
-- 兼容探测脚本 `scripts/scan_openclaw_compat.py`
-- 回滚与发布说明
+> 前台先变流畅，后台再变确定性。
