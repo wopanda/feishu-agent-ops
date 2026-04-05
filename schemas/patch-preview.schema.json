@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/feishu-agent-ops/patch-preview.schema.json",
+  "title": "Feishu Agent Ops Patch Preview",
+  "type": "object",
+  "required": ["configPath", "jsonPatchPreview", "filesystemPreview", "summary"],
+  "properties": {
+    "configPath": { "type": "string" },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "addAccounts": { "type": "integer" },
+        "addBindings": { "type": "integer" },
+        "addAgents": { "type": "integer" },
+        "mkdirCount": { "type": "integer" }
+      },
+      "additionalProperties": true
+    },
+    "jsonPatchPreview": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/jsonPatchOp" }
+    },
+    "filesystemPreview": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/fsOp" }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "$defs": {
+    "jsonPatchOp": {
+      "type": "object",
+      "required": ["op", "path"],
+      "properties": {
+        "op": { "type": "string", "enum": ["add", "replace", "remove"] },
+        "path": { "type": "string" },
+        "value": {}
+      },
+      "additionalProperties": true
+    },
+    "fsOp": {
+      "type": "object",
+      "required": ["op", "path"],
+      "properties": {
+        "op": { "type": "string", "enum": ["mkdir", "write", "noop"] },
+        "path": { "type": "string" },
+        "reason": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

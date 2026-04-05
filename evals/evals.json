@@ -31,6 +31,11 @@
       "type": "file_exists"
     },
     {
+      "name": "patch_preview_schema_exists",
+      "path": "schemas/patch-preview.schema.json",
+      "type": "file_exists"
+    },
+    {
       "name": "normalize_request_script_exists",
       "path": "scripts/normalize_request.py",
       "type": "file_exists"
@@ -48,6 +53,11 @@
     {
       "name": "validate_plan_script_exists",
       "path": "scripts/validate_plan.py",
+      "type": "file_exists"
+    },
+    {
+      "name": "generate_patch_script_exists",
+      "path": "scripts/generate_patch.py",
       "type": "file_exists"
     },
     {
@@ -78,6 +88,11 @@
     {
       "name": "plan_validation_example_exists",
       "path": "examples/output-plan-validation-pass.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "patch_preview_example_exists",
+      "path": "examples/output-patch-preview.json",
       "type": "file_exists"
     },
     {

@@ -1,0 +1,29 @@
+{
+  "configPath": "~/.openclaw/openclaw.json",
+  "summary": {
+    "addAccounts": 3,
+    "addBindings": 3,
+    "addAgents": 3,
+    "mkdirCount": 6
+  },
+  "jsonPatchPreview": [
+    {
+      "op": "add",
+      "path": "/channels/feishu/accounts/manager",
+      "value": {
+        "appId": "cli_xxx_manager",
+        "appSecret": "<redacted-at-preview>",
+        "botName": "总控机器人",
+        "enabled": true
+      }
+    }
+  ],
+  "filesystemPreview": [
+    {
+      "op": "mkdir",
+      "path": "~/.openclaw/workspace-manager",
+      "reason": "workspace for manager"
+    }
+  ],
+  "warnings": []
+}

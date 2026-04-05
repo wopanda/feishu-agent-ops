@@ -93,7 +93,16 @@ python3 scripts/validate_plan.py \
   --pretty
 ```
 
-### 第 7 步：确认后再 apply / repair
+### 第 7 步：生成拟变更预览
+在真正 apply 前，把目标预览翻成 patch preview：
+
+```bash
+python3 scripts/generate_patch.py \
+  --desired examples/output-desired-state-preview.json \
+  --pretty
+```
+
+### 第 8 步：确认后再 apply / repair
 - 变更前先备份
 - 变更后强制验证
 
@@ -105,6 +114,7 @@ python3 scripts/validate_plan.py \
 - `scan-current-state`
 - `build-desired-state`
 - `validate-plan`
+- `generate-patch`
 - `plan`
 - `apply`
 - `inspect`
@@ -192,6 +202,21 @@ python3 scripts/normalize_request.py --input examples/input-minimal.json --prett
 
 输出样例：
 - `examples/output-plan-validation-pass.json`
+
+## 拟变更预览（新增）
+
+为了让 apply 前的风险可视化，后台新增：
+- `schemas/patch-preview.schema.json`
+- `scripts/generate_patch.py`
+
+它会输出：
+- 将新增哪些 accounts
+- 将新增哪些 bindings
+- 将新增哪些 agents
+- 将创建哪些目录
+
+输出样例：
+- `examples/output-patch-preview.json`
 
 ## Root-Cause-First（根因优先）规则
 
