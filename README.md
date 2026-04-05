@@ -153,7 +153,22 @@ python3 scripts/verify_setup.py \
   --pretty
 ```
 
-### 第 10 步：确认通过后再收口
+### 第 10 步：最小执行骨架（可选）
+如果已经确认 patch preview 没问题，可用最小执行骨架做真正 apply：
+
+```bash
+python3 scripts/apply_real.py \
+  --patch-preview examples/output-patch-preview.json \
+  --config /tmp/openclaw-apply-real-test.json \
+  --execute \
+  --pretty
+```
+
+当前只支持：
+- `jsonPatchPreview` 中的 `add`
+- `filesystemPreview` 中的 `mkdir`
+
+### 第 11 步：确认通过后再收口
 - 至少验证配置可读
 - 至少验证目录存在
 - 至少验证 1 个目标 bot 在待验证列表中
@@ -191,6 +206,7 @@ python3 scripts/verify_setup.py \
 - `generate-patch`
 - `apply-patch-dry-run`
 - `verify-setup`
+- `apply-real-minimal`
 - `plan`
 - `apply`
 - `inspect`
@@ -221,6 +237,7 @@ python3 scripts/verify_setup.py \
 - `scripts/generate_patch.py`：把目标预览翻成 json patch + 目录操作预览
 - `scripts/apply_patch.py`：把 patch preview 翻成 dry-run 执行计划
 - `scripts/verify_setup.py`：把目标预览翻成落地后验证清单
+- `scripts/apply_real.py`：最小 apply 执行骨架（当前只支持 `add + mkdir`）
 
 示例：
 
@@ -232,6 +249,7 @@ python3 scripts/validate_plan.py --request examples/output-normalized-bootstrap.
 python3 scripts/generate_patch.py --desired examples/output-desired-state-preview.json --pretty
 python3 scripts/apply_patch.py --patch-preview examples/output-patch-preview.json --pretty
 python3 scripts/verify_setup.py --desired examples/output-desired-state-preview.json --pretty
+python3 scripts/apply_real.py --patch-preview examples/output-patch-preview.json --config /tmp/openclaw-apply-real-test.json --pretty
 ```
 
 归一化输出样例见：

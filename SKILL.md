@@ -120,7 +120,22 @@ python3 scripts/verify_setup.py \
   --pretty
 ```
 
-### 第 10 步：确认通过后再收口
+### 第 10 步：最小执行骨架（可选）
+如果已经确认 patch preview 没问题，可用最小执行骨架做真正 apply：
+
+```bash
+python3 scripts/apply_real.py \
+  --patch-preview examples/output-patch-preview.json \
+  --config /tmp/openclaw-apply-real-test.json \
+  --execute \
+  --pretty
+```
+
+当前只支持：
+- `jsonPatchPreview` 中的 `add`
+- `filesystemPreview` 中的 `mkdir`
+
+### 第 11 步：确认通过后再收口
 - 至少验证配置可读
 - 至少验证目录存在
 - 至少验证 1 个目标 bot 在待验证列表中
@@ -136,6 +151,7 @@ python3 scripts/verify_setup.py \
 - `generate-patch`
 - `apply-patch-dry-run`
 - `verify-setup`
+- `apply-real-minimal`
 - `plan`
 - `apply`
 - `inspect`
@@ -266,6 +282,19 @@ python3 scripts/normalize_request.py --input examples/input-minimal.json --prett
 
 输出样例：
 - `examples/output-verify-setup-checklist.json`
+
+## 最小执行骨架（新增）
+
+为了开始把 preview 接到真实落地入口，后台新增：
+- `scripts/apply_real.py`
+
+它当前只支持最小范围：
+- `jsonPatchPreview` 里的 `add`
+- `filesystemPreview` 里的 `mkdir`
+
+并支持：
+- `--config` 覆盖目标配置路径
+- `--execute` 真正执行写入
 
 ## Root-Cause-First（根因优先）规则
 

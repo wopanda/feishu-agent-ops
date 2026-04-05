@@ -71,6 +71,11 @@
       "type": "file_exists"
     },
     {
+      "name": "apply_real_script_exists",
+      "path": "scripts/apply_real.py",
+      "type": "file_exists"
+    },
+    {
       "name": "first_success_path_exists",
       "path": "references/first-success-path.md",
       "type": "file_exists"
