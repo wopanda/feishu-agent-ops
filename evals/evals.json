@@ -46,6 +46,11 @@
       "type": "file_exists"
     },
     {
+      "name": "validate_plan_script_exists",
+      "path": "scripts/validate_plan.py",
+      "type": "file_exists"
+    },
+    {
       "name": "first_success_path_exists",
       "path": "references/first-success-path.md",
       "type": "file_exists"
@@ -68,6 +73,11 @@
     {
       "name": "desired_state_example_exists",
       "path": "examples/output-desired-state-preview.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "plan_validation_example_exists",
+      "path": "examples/output-plan-validation-pass.json",
       "type": "file_exists"
     },
     {

@@ -83,7 +83,17 @@ python3 scripts/build_desired_state.py \
   --pretty
 ```
 
-### 第 6 步：确认后再 apply / repair
+### 第 6 步：先校验预览
+在真正 apply 前，先对目标预览做静态校验：
+
+```bash
+python3 scripts/validate_plan.py \
+  --request examples/output-normalized-bootstrap.json \
+  --desired examples/output-desired-state-preview.json \
+  --pretty
+```
+
+### 第 7 步：确认后再 apply / repair
 - 变更前先备份
 - 变更后强制验证
 
@@ -94,6 +104,7 @@ python3 scripts/build_desired_state.py \
 - `normalize-request`
 - `scan-current-state`
 - `build-desired-state`
+- `validate-plan`
 - `plan`
 - `apply`
 - `inspect`
@@ -165,6 +176,22 @@ python3 scripts/normalize_request.py --input examples/input-minimal.json --prett
 
 如果要验证“空白 bootstrap 现场”的目标预览，可搭配：
 - `examples/observed-state-bootstrap-empty.json`
+
+## 预览校验（新增）
+
+为了避免把明显冲突的预览推进到 apply，后台新增：
+- `scripts/validate_plan.py`
+
+它当前会检查：
+- 重复 `agentId`
+- 重复 `accountId`
+- 重复 binding
+- group routing 缺少 `chatId`
+- `bind-existing` 缺少 `agentId`
+- bootstrap / expand 预览为空
+
+输出样例：
+- `examples/output-plan-validation-pass.json`
 
 ## Root-Cause-First（根因优先）规则
 

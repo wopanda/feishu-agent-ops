@@ -116,7 +116,17 @@ python3 scripts/build_desired_state.py \
   --pretty
 ```
 
-### 第 6 步：确认后再 apply / repair
+### 第 6 步：先校验预览
+在真正 apply 前，先对目标预览做静态校验：
+
+```bash
+python3 scripts/validate_plan.py \
+  --request examples/output-normalized-bootstrap.json \
+  --desired examples/output-desired-state-preview.json \
+  --pretty
+```
+
+### 第 7 步：确认后再 apply / repair
 - 先备份
 - 再 patch
 - 最后验证
@@ -150,6 +160,7 @@ python3 scripts/build_desired_state.py \
 - `normalize-request`
 - `scan-current-state`
 - `build-desired-state`
+- `validate-plan`
 - `plan`
 - `apply`
 - `inspect`
@@ -175,6 +186,7 @@ python3 scripts/build_desired_state.py \
 - `scripts/scan_current_state.py`：把当前配置压成 observed state
 - `schemas/desired-state.schema.json`：目标预览结构
 - `scripts/build_desired_state.py`：从 request + observed 生成目标预览
+- `scripts/validate_plan.py`：对目标预览做静态校验
 
 示例：
 
@@ -182,6 +194,7 @@ python3 scripts/build_desired_state.py \
 python3 scripts/normalize_request.py --input examples/input-minimal.json --pretty
 python3 scripts/scan_current_state.py --config ~/.openclaw/openclaw.json --pretty
 python3 scripts/build_desired_state.py --request examples/output-normalized-bootstrap.json --observed examples/output-observed-state.json --pretty
+python3 scripts/validate_plan.py --request examples/output-normalized-bootstrap.json --desired examples/output-desired-state-preview.json --pretty
 ```
 
 归一化输出样例见：
@@ -192,6 +205,9 @@ python3 scripts/build_desired_state.py --request examples/output-normalized-boot
 
 目标预览输出样例见：
 - `examples/output-desired-state-preview.json`
+
+预览校验输出样例见：
+- `examples/output-plan-validation-pass.json`
 
 如果你要验证“真正从空白单体开始 bootstrap”的情况，还可以看：
 - `examples/observed-state-bootstrap-empty.json`
@@ -223,6 +239,9 @@ python3 scripts/build_desired_state.py --request examples/output-normalized-boot
 
 目标预览输出样例见：
 - `examples/output-desired-state-preview.json`
+
+预览校验输出样例见：
+- `examples/output-plan-validation-pass.json`
 
 空白 bootstrap 现场样例见：
 - `examples/observed-state-bootstrap-empty.json`
