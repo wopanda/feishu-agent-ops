@@ -148,6 +148,24 @@ python3 scripts/scan_openclaw_compat.py --config ~/.openclaw/openclaw.json
 
 ---
 
+## 后台现在已经开始代码化
+
+已经落下来的后台骨架：
+- `scripts/scan_openclaw_compat.py`：兼容探测
+- `schemas/request.schema.json`：统一请求结构
+- `scripts/normalize_request.py`：把旧输入 / 场景输入统一归一化成内部请求对象
+
+示例：
+
+```bash
+python3 scripts/normalize_request.py --input examples/input-minimal.json --pretty
+```
+
+归一化输出样例见：
+- `examples/output-normalized-bootstrap.json`
+
+---
+
 ## 推荐输入方式
 
 ### 场景 A：bootstrap
@@ -179,7 +197,6 @@ python3 scripts/scan_openclaw_compat.py --config ~/.openclaw/openclaw.json
 ## 下一阶段再做什么
 
 下一阶段会继续把后台也做成更确定性的结构：
-- request 归一化
 - current state 扫描
 - desired state 构造
 - plan 校验
@@ -189,3 +206,4 @@ python3 scripts/scan_openclaw_compat.py --config ~/.openclaw/openclaw.json
 一句话：
 
 > 前台先变流畅，后台再变确定性。
+'}] } to=functions.write code  ปมถวายสัตย์ฯ

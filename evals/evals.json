@@ -16,6 +16,16 @@
       "type": "file_exists"
     },
     {
+      "name": "request_schema_exists",
+      "path": "schemas/request.schema.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "normalize_request_script_exists",
+      "path": "scripts/normalize_request.py",
+      "type": "file_exists"
+    },
+    {
       "name": "first_success_path_exists",
       "path": "references/first-success-path.md",
       "type": "file_exists"
@@ -23,6 +33,11 @@
     {
       "name": "minimal_example_exists",
       "path": "examples/input-minimal.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "normalized_bootstrap_example_exists",
+      "path": "examples/output-normalized-bootstrap.json",
       "type": "file_exists"
     },
     {

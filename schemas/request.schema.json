@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/feishu-agent-ops/request.schema.json",
+  "title": "Feishu Agent Ops Normalized Request",
+  "type": "object",
+  "required": ["scenario", "routingMode", "agentMode", "bots", "configPath"],
+  "properties": {
+    "scenario": {
+      "type": "string",
+      "enum": ["bootstrap", "expand", "diagnose"]
+    },
+    "goal": {
+      "type": "string"
+    },
+    "routingMode": {
+      "type": "string",
+      "enum": ["account", "group", "mixed"]
+    },
+    "agentMode": {
+      "type": "string",
+      "enum": ["bind-existing", "create-new"]
+    },
+    "defaultModel": {
+      "type": ["string", "null"]
+    },
+    "configPath": {
+      "type": "string"
+    },
+    "existingAgents": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "bots": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/bot"
+      }
+    },
+    "symptoms": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "affectedBots": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "allowReadOnlyScan": {
+      "type": "boolean"
+    },
+    "repairAfterDiagnosis": {
+      "type": "boolean"
+    },
+    "sourceAction": {
+      "type": ["string", "null"]
+    },
+    "sourceMode": {
+      "type": ["string", "null"]
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "$defs": {
+    "bot": {
+      "type": "object",
+      "required": ["accountId", "botName", "appId", "appSecret"],
+      "properties": {
+        "accountId": { "type": "string" },
+        "botName": { "type": "string" },
+        "appId": { "type": "string" },
+        "appSecret": { "type": "string" },
+        "roleName": { "type": ["string", "null"] },
+        "agentId": { "type": ["string", "null"] },
+        "chatId": { "type": ["string", "null"] },
+        "isDefault": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

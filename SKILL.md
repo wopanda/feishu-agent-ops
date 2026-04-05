@@ -69,6 +69,13 @@ python3 scripts/scan_openclaw_compat.py --config ~/.openclaw/openclaw.json
 ### 第 4 步：先给预览，不直接改
 - bootstrap / expand：输出目标结构预览、增量 diff、验证路径
 - diagnose：输出根因诊断、修复优先级、风险说明
+- 旧输入进入内部执行前，先统一归一化为场景优先的 request 结构
+
+推荐脚本：
+
+```bash
+python3 scripts/normalize_request.py --input examples/input-minimal.json --pretty
+```
 
 ### 第 5 步：确认后再 apply / repair
 - 变更前先备份
@@ -78,6 +85,7 @@ python3 scripts/scan_openclaw_compat.py --config ~/.openclaw/openclaw.json
 
 虽然前台改成场景入口，但后台仍然会调用这些阶段：
 - `compat-scan`
+- `normalize-request`
 - `plan`
 - `apply`
 - `inspect`

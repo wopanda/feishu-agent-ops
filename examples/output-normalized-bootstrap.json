@@ -1,0 +1,48 @@
+{
+  "scenario": "bootstrap",
+  "goal": "plan",
+  "routingMode": "account",
+  "agentMode": "create-new",
+  "defaultModel": "huandutech/gpt-5.4-high",
+  "configPath": "~/.openclaw/openclaw.json",
+  "existingAgents": [],
+  "bots": [
+    {
+      "accountId": "manager",
+      "botName": "总控机器人",
+      "appId": "cli_xxx_manager",
+      "appSecret": "secret_manager",
+      "roleName": "总控",
+      "agentId": null,
+      "chatId": null,
+      "isDefault": true
+    },
+    {
+      "accountId": "research",
+      "botName": "调研机器人",
+      "appId": "cli_xxx_research",
+      "appSecret": "secret_research",
+      "roleName": "调研",
+      "agentId": null,
+      "chatId": null,
+      "isDefault": false
+    },
+    {
+      "accountId": "writer",
+      "botName": "写作机器人",
+      "appId": "cli_xxx_writer",
+      "appSecret": "secret_writer",
+      "roleName": "写作",
+      "agentId": null,
+      "chatId": null,
+      "isDefault": false
+    }
+  ],
+  "symptoms": [],
+  "affectedBots": [],
+  "allowReadOnlyScan": false,
+  "repairAfterDiagnosis": false,
+  "sourceAction": "plan",
+  "sourceMode": null,
+  "warnings": []
+}
