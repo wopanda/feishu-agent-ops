@@ -121,11 +121,23 @@ python3 scripts/verify_setup.py \
 ```
 
 ### 第 10 步：最小执行骨架（可选）
-如果已经确认 patch preview 没问题，可用最小执行骨架做真正 apply：
+如果已经确认 patch preview 没问题，可用最小执行骨架做真正 apply。
+
+仅做结构预演（不真正写入）时：
 
 ```bash
 python3 scripts/apply_real.py \
   --patch-preview examples/output-patch-preview-full.json \
+  --config /tmp/openclaw-apply-real-test.json \
+  --pretty
+```
+
+真正执行写入时，如果 patch preview 里的 `appSecret` 已经被脱敏，则必须额外提供 secret map：
+
+```bash
+python3 scripts/apply_real.py \
+  --patch-preview examples/output-patch-preview-full.json \
+  --secrets examples/input-apply-secrets.json \
   --config /tmp/openclaw-apply-real-test.json \
   --execute \
   --pretty
@@ -134,6 +146,11 @@ python3 scripts/apply_real.py \
 当前只支持：
 - `jsonPatchPreview` 中的 `add`
 - `filesystemPreview` 中的 `mkdir`
+- `--secrets` 按 `accountId` 恢复被脱敏的 `appSecret`
+
+并且当前规则是：
+- 不带 `--execute` 时，可只看结构，不强制提供 `--secrets`
+- 带 `--execute` 时，如果存在被脱敏的 `appSecret`，则必须提供完整 `--secrets`
 
 ### 第 11 步：确认通过后再收口
 - 至少验证配置可读
@@ -288,6 +305,7 @@ python3 scripts/normalize_request.py --input examples/input-minimal.json --prett
 为了开始把 preview 接到真实落地入口，后台新增：
 - `scripts/apply_real.py`
 - `schemas/apply-result.schema.json`
+- `schemas/apply-secrets.schema.json`
 
 它当前只支持最小范围：
 - `jsonPatchPreview` 里的 `add`
@@ -295,10 +313,14 @@ python3 scripts/normalize_request.py --input examples/input-minimal.json --prett
 
 并支持：
 - `--config` 覆盖目标配置路径
+- `--secrets` 用 `accountId -> appSecret` 恢复 preview 中被脱敏的 secret
 - `--execute` 真正执行写入
 
 输出样例：
 - `examples/output-apply-result-ready.json`
+
+real apply secret map 输入样例：
+- `examples/input-apply-secrets.json`
 
 Secret 流设计说明：
 - `docs/secret-flow.md`

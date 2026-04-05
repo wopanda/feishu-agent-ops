@@ -154,11 +154,23 @@ python3 scripts/verify_setup.py \
 ```
 
 ### 第 10 步：最小执行骨架（可选）
-如果已经确认 patch preview 没问题，可用最小执行骨架做真正 apply：
+如果已经确认 patch preview 没问题，可用最小执行骨架做真正 apply。
+
+仅做结构预演（不真正写入）时：
 
 ```bash
 python3 scripts/apply_real.py \
   --patch-preview examples/output-patch-preview-full.json \
+  --config /tmp/openclaw-apply-real-test.json \
+  --pretty
+```
+
+真正执行写入时，如果 patch preview 里的 `appSecret` 已经被脱敏，则必须额外提供 secret map：
+
+```bash
+python3 scripts/apply_real.py \
+  --patch-preview examples/output-patch-preview-full.json \
+  --secrets examples/input-apply-secrets.json \
   --config /tmp/openclaw-apply-real-test.json \
   --execute \
   --pretty
@@ -167,6 +179,11 @@ python3 scripts/apply_real.py \
 当前只支持：
 - `jsonPatchPreview` 中的 `add`
 - `filesystemPreview` 中的 `mkdir`
+- `--secrets` 按 `accountId` 恢复被脱敏的 `appSecret`
+
+并且当前规则是：
+- 不带 `--execute` 时，可只看结构，不强制提供 `--secrets`
+- 带 `--execute` 时，如果存在被脱敏的 `appSecret`，则必须提供完整 `--secrets`
 
 ### 第 11 步：确认通过后再收口
 - 至少验证配置可读
@@ -235,10 +252,11 @@ python3 scripts/apply_real.py \
 - `scripts/validate_plan.py`：对目标预览做静态校验
 - `schemas/patch-preview.schema.json`：拟变更预览结构
 - `schemas/apply-result.schema.json`：最小 apply 执行结果结构
+- `schemas/apply-secrets.schema.json`：real apply 的 secret map 输入结构
 - `scripts/generate_patch.py`：把目标预览翻成 json patch + 目录操作预览
 - `scripts/apply_patch.py`：把 patch preview 翻成 dry-run 执行计划
 - `scripts/verify_setup.py`：把目标预览翻成落地后验证清单
-- `scripts/apply_real.py`：最小 apply 执行骨架（当前只支持 `add + mkdir`）
+- `scripts/apply_real.py`：最小 apply 执行骨架（当前支持 `add + mkdir`，并可用 `--secrets` 恢复 preview 中被脱敏的 `appSecret`）
 
 示例：
 
@@ -251,6 +269,7 @@ python3 scripts/generate_patch.py --desired examples/output-desired-state-previe
 python3 scripts/apply_patch.py --patch-preview examples/output-patch-preview-full.json --pretty
 python3 scripts/verify_setup.py --desired examples/output-desired-state-preview.json --pretty
 python3 scripts/apply_real.py --patch-preview examples/output-patch-preview-full.json --config /tmp/openclaw-apply-real-test.json --pretty
+python3 scripts/apply_real.py --patch-preview examples/output-patch-preview-full.json --secrets examples/input-apply-secrets.json --config /tmp/openclaw-apply-real-test.json --execute --pretty
 ```
 
 归一化输出样例见：
@@ -278,6 +297,9 @@ python3 scripts/apply_real.py --patch-preview examples/output-patch-preview-full
 
 最小 apply 执行结果样例见：
 - `examples/output-apply-result-ready.json`
+
+real apply secret map 输入样例见：
+- `examples/input-apply-secrets.json`
 
 Secret 流设计说明见：
 - `docs/secret-flow.md`

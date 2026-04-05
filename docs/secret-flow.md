@@ -129,11 +129,17 @@
 
 ```json
 {
-  "manager": { "appSecret": "..." },
-  "research": { "appSecret": "..." },
-  "writer": { "appSecret": "..." }
+  "accounts": {
+    "manager": { "appSecret": "..." },
+    "research": { "appSecret": "..." },
+    "writer": { "appSecret": "..." }
+  }
 }
 ```
+
+可参考：
+- schema：`schemas/apply-secrets.schema.json`
+- example：`examples/input-apply-secrets.json`
 
 然后按 `accountId` 合并。
 
@@ -193,6 +199,7 @@
 - 最小执行骨架
 - 支持 `add + mkdir`
 - 支持 `--execute`
+- 支持 `--secrets <path>` 按 `accountId` 注入真实 `appSecret`
 
 但它**还不能被视为真正可生产使用的 apply 引擎**，原因之一就是：
 
@@ -201,7 +208,7 @@
 所以在 secret flow 设计没补完之前，应把它视为：
 - 结构验证工具
 - 本地受控实验工具
-- 执行链占位骨架
+- 带显式 secret 注入 contract 的最小执行骨架
 
 而不是生产级落地器。
 
