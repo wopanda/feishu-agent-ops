@@ -274,6 +274,7 @@ python3 scripts/apply_real.py --patch-preview examples/output-patch-preview-full
 
 落地后验证清单样例见：
 - `examples/output-verify-setup-checklist.json`
+- `examples/output-verify-setup-checklist-full.json`
 
 最小 apply 执行结果样例见：
 - `examples/output-apply-result-ready.json`
@@ -318,6 +319,7 @@ Secret 流设计说明见：
 
 落地后验证清单样例见：
 - `examples/output-verify-setup-checklist.json`
+- `examples/output-verify-setup-checklist-full.json`
 
 空白 bootstrap 现场样例见：
 - `examples/observed-state-bootstrap-empty.json`

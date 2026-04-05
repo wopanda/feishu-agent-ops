@@ -131,6 +131,11 @@
       "type": "file_exists"
     },
     {
+      "name": "verify_setup_checklist_full_example_exists",
+      "path": "examples/output-verify-setup-checklist-full.json",
+      "type": "file_exists"
+    },
+    {
       "name": "apply_result_ready_example_exists",
       "path": "examples/output-apply-result-ready.json",
       "type": "file_exists"
