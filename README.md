@@ -277,6 +277,9 @@ python3 scripts/apply_real.py --patch-preview examples/output-patch-preview.json
 最小 apply 执行结果样例见：
 - `examples/output-apply-result-ready.json`
 
+Secret 流设计说明见：
+- `docs/secret-flow.md`
+
 ---
 
 ## 推荐输入方式
@@ -325,6 +328,7 @@ python3 scripts/apply_real.py --patch-preview examples/output-patch-preview.json
 2. `accounts` 与 `bindings` 没有真正闭环  
 3. 插件链路重复覆盖、实际生效实现不清楚  
 4. OpenClaw 版本 / 插件版本 / 字段结构已经漂移，但还按旧心智在修
+5. 预览阶段已脱敏，但真实 apply 阶段没有明确 secret 注入来源
 
 ---
 

@@ -146,6 +146,11 @@
       "type": "file_exists"
     },
     {
+      "name": "secret_flow_doc_exists",
+      "path": "docs/secret-flow.md",
+      "type": "file_exists"
+    },
+    {
       "name": "repair_playbook_exists",
       "path": "docs/repair-playbook.md",
       "type": "file_exists"

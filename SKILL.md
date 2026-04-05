@@ -300,6 +300,9 @@ python3 scripts/normalize_request.py --input examples/input-minimal.json --prett
 输出样例：
 - `examples/output-apply-result-ready.json`
 
+Secret 流设计说明：
+- `docs/secret-flow.md`
+
 ## Root-Cause-First（根因优先）规则
 
 在 `diagnose` 场景中，必须按下面顺序排查：
@@ -343,6 +346,7 @@ python3 scripts/normalize_request.py --input examples/input-minimal.json --prett
 - `repair` 默认只做最小修复，不大范围重写
 - 当 compat-scan 结果是 `mixed-transition` / `broken-state` 时，不允许按单一版本心智盲改
 - 没有验证依据，不说“已完成可用”
+- preview 已脱敏时，不把 preview 当成真实 secret 来源
 
 ## 默认输出结构
 
