@@ -140,7 +140,7 @@ python3 scripts/generate_patch.py \
 
 ```bash
 python3 scripts/apply_patch.py \
-  --patch-preview examples/output-patch-preview.json \
+  --patch-preview examples/output-patch-preview-full.json \
   --pretty
 ```
 
@@ -158,7 +158,7 @@ python3 scripts/verify_setup.py \
 
 ```bash
 python3 scripts/apply_real.py \
-  --patch-preview examples/output-patch-preview.json \
+  --patch-preview examples/output-patch-preview-full.json \
   --config /tmp/openclaw-apply-real-test.json \
   --execute \
   --pretty
@@ -248,9 +248,9 @@ python3 scripts/scan_current_state.py --config ~/.openclaw/openclaw.json --prett
 python3 scripts/build_desired_state.py --request examples/output-normalized-bootstrap.json --observed examples/output-observed-state.json --pretty
 python3 scripts/validate_plan.py --request examples/output-normalized-bootstrap.json --desired examples/output-desired-state-preview.json --pretty
 python3 scripts/generate_patch.py --desired examples/output-desired-state-preview.json --pretty
-python3 scripts/apply_patch.py --patch-preview examples/output-patch-preview.json --pretty
+python3 scripts/apply_patch.py --patch-preview examples/output-patch-preview-full.json --pretty
 python3 scripts/verify_setup.py --desired examples/output-desired-state-preview.json --pretty
-python3 scripts/apply_real.py --patch-preview examples/output-patch-preview.json --config /tmp/openclaw-apply-real-test.json --pretty
+python3 scripts/apply_real.py --patch-preview examples/output-patch-preview-full.json --config /tmp/openclaw-apply-real-test.json --pretty
 ```
 
 归一化输出样例见：

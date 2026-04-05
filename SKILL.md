@@ -107,7 +107,7 @@ python3 scripts/generate_patch.py \
 
 ```bash
 python3 scripts/apply_patch.py \
-  --patch-preview examples/output-patch-preview.json \
+  --patch-preview examples/output-patch-preview-full.json \
   --pretty
 ```
 
@@ -125,7 +125,7 @@ python3 scripts/verify_setup.py \
 
 ```bash
 python3 scripts/apply_real.py \
-  --patch-preview examples/output-patch-preview.json \
+  --patch-preview examples/output-patch-preview-full.json \
   --config /tmp/openclaw-apply-real-test.json \
   --execute \
   --pretty
