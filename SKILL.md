@@ -69,13 +69,6 @@ python3 scripts/scan_openclaw_compat.py --config ~/.openclaw/openclaw.json
 ### 第 4 步：先给预览，不直接改
 - bootstrap / expand：输出目标结构预览、增量 diff、验证路径
 - diagnose：输出根因诊断、修复优先级、风险说明
-- 旧输入进入内部执行前，先统一归一化为场景优先的 request 结构
-
-推荐脚本：
-
-```bash
-python3 scripts/normalize_request.py --input examples/input-minimal.json --pretty
-```
 
 ### 第 5 步：确认后再 apply / repair
 - 变更前先备份
@@ -95,6 +88,27 @@ python3 scripts/normalize_request.py --input examples/input-minimal.json --prett
 只是现在的顺序变成：
 
 > 先判场景，再决定动作链。
+
+## 请求归一化（新增）
+
+为了兼容旧输入和新场景输入，后台新增：
+- `schemas/request.schema.json`
+- `scripts/normalize_request.py`
+
+它会把：
+- 旧的 action-first 输入
+- 新的 scenario-first 输入
+
+统一归一化成内部请求对象，避免后面每一步都重复猜用户意思。
+
+示例：
+
+```bash
+python3 scripts/normalize_request.py --input examples/input-minimal.json --pretty
+```
+
+归一化输出样例：
+- `examples/output-normalized-bootstrap.json`
 
 ## Root-Cause-First（根因优先）规则
 

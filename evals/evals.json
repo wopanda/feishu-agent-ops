@@ -94,6 +94,21 @@
       "name": "scenario_diagnose_example_exists",
       "path": "examples/scenario-diagnose.json",
       "type": "file_exists"
+    },
+    {
+      "name": "request_schema_exists",
+      "path": "schemas/request.schema.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "normalize_request_script_exists",
+      "path": "scripts/normalize_request.py",
+      "type": "file_exists"
+    },
+    {
+      "name": "normalized_bootstrap_example_exists",
+      "path": "examples/output-normalized-bootstrap.json",
+      "type": "file_exists"
     }
   ]
 }

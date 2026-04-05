@@ -183,6 +183,9 @@ python3 scripts/normalize_request.py --input examples/input-minimal.json --prett
 兼容探测输出样例见：
 - `examples/output-compat-scan.json`
 
+归一化输出样例见：
+- `examples/output-normalized-bootstrap.json`
+
 ---
 
 ## 当前默认先盯的高频风险
@@ -206,4 +209,3 @@ python3 scripts/normalize_request.py --input examples/input-minimal.json --prett
 一句话：
 
 > 前台先变流畅，后台再变确定性。
-'}] } to=functions.write code  ปมถวายสัตย์ฯ
