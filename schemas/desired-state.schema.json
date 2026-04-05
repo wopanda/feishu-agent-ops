@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/feishu-agent-ops/desired-state.schema.json",
+  "title": "Feishu Agent Ops Desired State",
+  "type": "object",
+  "required": ["scenario", "planSummary", "plannedAccounts", "plannedBindings", "plannedAgents"],
+  "properties": {
+    "scenario": {
+      "type": "string",
+      "enum": ["bootstrap", "expand", "diagnose"]
+    },
+    "routingMode": {
+      "type": "string",
+      "enum": ["account", "group", "mixed"]
+    },
+    "agentMode": {
+      "type": "string",
+      "enum": ["bind-existing", "create-new"]
+    },
+    "configPath": {
+      "type": "string"
+    },
+    "planSummary": {
+      "type": "object",
+      "properties": {
+        "createAgents": { "type": "integer" },
+        "createAccounts": { "type": "integer" },
+        "createBindings": { "type": "integer" },
+        "mode": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "plannedAgents": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/agent" }
+    },
+    "plannedAccounts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/account" }
+    },
+    "plannedBindings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/binding" }
+    },
+    "nextActions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "$defs": {
+    "agent": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "workspace": { "type": ["string", "null"] },
+        "agentDir": { "type": ["string", "null"] },
+        "source": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "account": {
+      "type": "object",
+      "properties": {
+        "accountId": { "type": "string" },
+        "botName": { "type": ["string", "null"] },
+        "appId": { "type": ["string", "null"] },
+        "dmPolicy": { "type": ["string", "null"] },
+        "source": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "binding": {
+      "type": "object",
+      "properties": {
+        "agentId": { "type": ["string", "null"] },
+        "accountId": { "type": ["string", "null"] },
+        "routingKind": { "type": "string", "enum": ["account", "group", "other"] },
+        "chatId": { "type": ["string", "null"] },
+        "source": { "type": "string" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

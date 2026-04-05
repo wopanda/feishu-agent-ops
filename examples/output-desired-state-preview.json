@@ -1,0 +1,85 @@
+{
+  "scenario": "bootstrap",
+  "routingMode": "account",
+  "agentMode": "create-new",
+  "configPath": "~/.openclaw/openclaw.json",
+  "planSummary": {
+    "createAgents": 3,
+    "createAccounts": 3,
+    "createBindings": 3,
+    "mode": "preview"
+  },
+  "plannedAgents": [
+    {
+      "id": "manager",
+      "workspace": "~/.openclaw/workspace-manager",
+      "agentDir": "~/.openclaw/agents/manager/agent",
+      "source": "request"
+    },
+    {
+      "id": "research",
+      "workspace": "~/.openclaw/workspace-research",
+      "agentDir": "~/.openclaw/agents/research/agent",
+      "source": "request"
+    },
+    {
+      "id": "writer",
+      "workspace": "~/.openclaw/workspace-writer",
+      "agentDir": "~/.openclaw/agents/writer/agent",
+      "source": "request"
+    }
+  ],
+  "plannedAccounts": [
+    {
+      "accountId": "manager",
+      "botName": "总控机器人",
+      "appId": "cli_xxx_manager",
+      "dmPolicy": "open",
+      "source": "request"
+    },
+    {
+      "accountId": "research",
+      "botName": "调研机器人",
+      "appId": "cli_xxx_research",
+      "dmPolicy": "open",
+      "source": "request"
+    },
+    {
+      "accountId": "writer",
+      "botName": "写作机器人",
+      "appId": "cli_xxx_writer",
+      "dmPolicy": "open",
+      "source": "request"
+    }
+  ],
+  "plannedBindings": [
+    {
+      "agentId": "manager",
+      "accountId": "manager",
+      "routingKind": "account",
+      "chatId": null,
+      "source": "request"
+    },
+    {
+      "agentId": "research",
+      "accountId": "research",
+      "routingKind": "account",
+      "chatId": null,
+      "source": "request"
+    },
+    {
+      "agentId": "writer",
+      "accountId": "writer",
+      "routingKind": "account",
+      "chatId": null,
+      "source": "request"
+    }
+  ],
+  "nextActions": [
+    "review preview",
+    "confirm before apply",
+    "backup config before patch",
+    "verify at least one target bot after apply"
+  ],
+  "warnings": []
+}

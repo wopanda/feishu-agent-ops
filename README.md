@@ -106,9 +106,15 @@ python3 scripts/scan_openclaw_compat.py --config ~/.openclaw/openclaw.json
 python3 scripts/scan_current_state.py --config ~/.openclaw/openclaw.json --pretty
 ```
 
-### 第 5 步：先给预览，不直接改
-- bootstrap / expand：给目标结构预览、增量 diff、验证路径
-- diagnose：给根因诊断、修复优先级、风险说明
+### 第 5 步：再构造目标预览
+把“归一化请求 + 当前现场”合成目标预览：
+
+```bash
+python3 scripts/build_desired_state.py \
+  --request examples/output-normalized-bootstrap.json \
+  --observed examples/output-observed-state.json \
+  --pretty
+```
 
 ### 第 6 步：确认后再 apply / repair
 - 先备份
@@ -143,6 +149,7 @@ python3 scripts/scan_current_state.py --config ~/.openclaw/openclaw.json --prett
 - `compat-scan`
 - `normalize-request`
 - `scan-current-state`
+- `build-desired-state`
 - `plan`
 - `apply`
 - `inspect`
@@ -166,12 +173,15 @@ python3 scripts/scan_current_state.py --config ~/.openclaw/openclaw.json --prett
 - `scripts/normalize_request.py`：把旧输入 / 场景输入统一归一化成内部请求对象
 - `schemas/observed-state.schema.json`：当前现场结构
 - `scripts/scan_current_state.py`：把当前配置压成 observed state
+- `schemas/desired-state.schema.json`：目标预览结构
+- `scripts/build_desired_state.py`：从 request + observed 生成目标预览
 
 示例：
 
 ```bash
 python3 scripts/normalize_request.py --input examples/input-minimal.json --pretty
 python3 scripts/scan_current_state.py --config ~/.openclaw/openclaw.json --pretty
+python3 scripts/build_desired_state.py --request examples/output-normalized-bootstrap.json --observed examples/output-observed-state.json --pretty
 ```
 
 归一化输出样例见：
@@ -179,6 +189,9 @@ python3 scripts/scan_current_state.py --config ~/.openclaw/openclaw.json --prett
 
 现场扫描输出样例见：
 - `examples/output-observed-state.json`
+
+目标预览输出样例见：
+- `examples/output-desired-state-preview.json`
 
 ---
 
@@ -205,6 +218,9 @@ python3 scripts/scan_current_state.py --config ~/.openclaw/openclaw.json --prett
 现场扫描输出样例见：
 - `examples/output-observed-state.json`
 
+目标预览输出样例见：
+- `examples/output-desired-state-preview.json`
+
 ---
 
 ## 当前默认先盯的高频风险
@@ -219,7 +235,6 @@ python3 scripts/scan_current_state.py --config ~/.openclaw/openclaw.json --prett
 ## 下一阶段再做什么
 
 下一阶段会继续把后台也做成更确定性的结构：
-- desired state 构造
 - plan 校验
 - patch 生成
 - apply / verify 分离

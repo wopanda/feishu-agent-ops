@@ -26,6 +26,11 @@
       "type": "file_exists"
     },
     {
+      "name": "desired_state_schema_exists",
+      "path": "schemas/desired-state.schema.json",
+      "type": "file_exists"
+    },
+    {
       "name": "normalize_request_script_exists",
       "path": "scripts/normalize_request.py",
       "type": "file_exists"
@@ -33,6 +38,11 @@
     {
       "name": "scan_current_state_script_exists",
       "path": "scripts/scan_current_state.py",
+      "type": "file_exists"
+    },
+    {
+      "name": "build_desired_state_script_exists",
+      "path": "scripts/build_desired_state.py",
       "type": "file_exists"
     },
     {
@@ -53,6 +63,11 @@
     {
       "name": "observed_state_example_exists",
       "path": "examples/output-observed-state.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "desired_state_example_exists",
+      "path": "examples/output-desired-state-preview.json",
       "type": "file_exists"
     },
     {
