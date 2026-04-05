@@ -73,21 +73,17 @@ python3 scripts/scan_openclaw_compat.py --config ~/.openclaw/openclaw.json
 python3 scripts/scan_current_state.py --config ~/.openclaw/openclaw.json --pretty
 ```
 
-### 第 5 步：先构造目标预览
-在 bootstrap / expand 场景，后台会基于 normalized request + observed state 构造 desired state preview：
+### 第 5 步：再构造目标预览
+把“归一化请求 + 当前现场”合成目标预览：
 
 ```bash
 python3 scripts/build_desired_state.py \
-  --request normalized-request.json \
-  --observed observed-state.json \
+  --request examples/output-normalized-bootstrap.json \
+  --observed examples/output-observed-state.json \
   --pretty
 ```
 
-### 第 6 步：先给预览，不直接改
-- bootstrap / expand：输出目标结构预览、增量 diff、验证路径
-- diagnose：输出根因诊断、修复优先级、风险说明
-
-### 第 7 步：确认后再 apply / repair
+### 第 6 步：确认后再 apply / repair
 - 变更前先备份
 - 变更后强制验证
 
@@ -148,19 +144,20 @@ python3 scripts/normalize_request.py --input examples/input-minimal.json --prett
 
 ## 目标预览构造（新增）
 
-为了把 bootstrap / expand 先变成“可预览结构”，后台新增：
+为了把 bootstrap / expand 的预览逻辑从 prompt 挪到确定性层，后台新增：
 - `schemas/desired-state.schema.json`
 - `scripts/build_desired_state.py`
 
-它会把：
+它会基于：
 - normalized request
 - observed state
 
-组合成：
-- planned agents
-- planned accounts
-- planned bindings
-- next actions
+生成：
+- plannedAgents
+- plannedAccounts
+- plannedBindings
+- planSummary
+- nextActions
 - warnings
 
 输出样例：
