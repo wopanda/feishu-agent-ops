@@ -144,10 +144,19 @@ python3 scripts/apply_patch.py \
   --pretty
 ```
 
-### 第 9 步：确认后再真正 apply / repair
-- 先备份
-- 再 patch
-- 最后验证
+### 第 9 步：生成落地后验证清单
+在真正 apply 后，先按 checklist 验证配置、目录和目标 bot：
+
+```bash
+python3 scripts/verify_setup.py \
+  --desired examples/output-desired-state-preview.json \
+  --pretty
+```
+
+### 第 10 步：确认通过后再收口
+- 至少验证配置可读
+- 至少验证目录存在
+- 至少验证 1 个目标 bot 在待验证列表中
 
 ---
 
@@ -181,6 +190,7 @@ python3 scripts/apply_patch.py \
 - `validate-plan`
 - `generate-patch`
 - `apply-patch-dry-run`
+- `verify-setup`
 - `plan`
 - `apply`
 - `inspect`
@@ -210,6 +220,7 @@ python3 scripts/apply_patch.py \
 - `schemas/patch-preview.schema.json`：拟变更预览结构
 - `scripts/generate_patch.py`：把目标预览翻成 json patch + 目录操作预览
 - `scripts/apply_patch.py`：把 patch preview 翻成 dry-run 执行计划
+- `scripts/verify_setup.py`：把目标预览翻成落地后验证清单
 
 示例：
 
@@ -220,6 +231,7 @@ python3 scripts/build_desired_state.py --request examples/output-normalized-boot
 python3 scripts/validate_plan.py --request examples/output-normalized-bootstrap.json --desired examples/output-desired-state-preview.json --pretty
 python3 scripts/generate_patch.py --desired examples/output-desired-state-preview.json --pretty
 python3 scripts/apply_patch.py --patch-preview examples/output-patch-preview.json --pretty
+python3 scripts/verify_setup.py --desired examples/output-desired-state-preview.json --pretty
 ```
 
 归一化输出样例见：
@@ -239,6 +251,9 @@ python3 scripts/apply_patch.py --patch-preview examples/output-patch-preview.jso
 
 执行计划 dry-run 输出样例见：
 - `examples/output-apply-plan-dry-run.json`
+
+落地后验证清单样例见：
+- `examples/output-verify-setup-checklist.json`
 
 ---
 
@@ -273,6 +288,9 @@ python3 scripts/apply_patch.py --patch-preview examples/output-patch-preview.jso
 
 拟变更预览输出样例见：
 - `examples/output-patch-preview.json`
+
+落地后验证清单样例见：
+- `examples/output-verify-setup-checklist.json`
 
 空白 bootstrap 现场样例见：
 - `examples/observed-state-bootstrap-empty.json`

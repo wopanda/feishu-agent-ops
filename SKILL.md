@@ -111,9 +111,19 @@ python3 scripts/apply_patch.py \
   --pretty
 ```
 
-### 第 9 步：确认后再真正 apply / repair
-- 变更前先备份
-- 变更后强制验证
+### 第 9 步：生成落地后验证清单
+在真正 apply 后，先按 checklist 验证配置、目录和目标 bot：
+
+```bash
+python3 scripts/verify_setup.py \
+  --desired examples/output-desired-state-preview.json \
+  --pretty
+```
+
+### 第 10 步：确认通过后再收口
+- 至少验证配置可读
+- 至少验证目录存在
+- 至少验证 1 个目标 bot 在待验证列表中
 
 ## 后台动作仍然保留
 
@@ -125,6 +135,7 @@ python3 scripts/apply_patch.py \
 - `validate-plan`
 - `generate-patch`
 - `apply-patch-dry-run`
+- `verify-setup`
 - `plan`
 - `apply`
 - `inspect`
@@ -241,6 +252,20 @@ python3 scripts/normalize_request.py --input examples/input-minimal.json --prett
 
 输出样例：
 - `examples/output-apply-plan-dry-run.json`
+
+## 落地后验证清单（新增）
+
+为了把 apply 后“怎么验”结构化，后台新增：
+- `scripts/verify_setup.py`
+
+它当前不会真正发消息验证，只会输出：
+- 配置文件可读检查
+- workspace / agentDir 存在性检查
+- bindings 目标数量检查
+- 至少 1 个目标 bot 的待验证探针
+
+输出样例：
+- `examples/output-verify-setup-checklist.json`
 
 ## Root-Cause-First（根因优先）规则
 
