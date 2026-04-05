@@ -1,5 +1,7 @@
 # Design V1
 
+> 注：当前仓库已开始进入 V2 重构过渡期。V1 的核心动作仍保留，但新增了“兼容探测优先”这一步，用来处理 OpenClaw 版本、Feishu/Lark 插件链和字段结构漂移问题。
+
 ## 定位
 `feishu-agent-ops` 是一个面向 OpenClaw + 飞书场景的多 Agent 接入 / 扩容 / 巡检 / 根因排查 / 修复 skill。
 
@@ -52,3 +54,17 @@
 1. `session.dmScope` 仍为 `per-channel-peer`，不适合多账号飞书隔离
 2. Feishu 存在 `default` 占位账号，但并未真正配置顶层默认账号，状态输出易误导
 3. 同时启用 `feishu` 与 `openclaw-lark`，出现 duplicate plugin warning，排障时不易判断哪条链路真正生效
+4. OpenClaw 升级后，插件链路或字段结构已经漂移，但仍按旧心智 patch
+
+## 新增：兼容探测优先
+在 diagnose / repair 之前，优先判断：
+- 当前 OpenClaw 是哪个版本
+- 生效的是旧 `feishu` 还是官方 `openclaw-lark`
+- `channels.feishu` 当前字段结构更像哪一代
+- 当前现场属于 `old-feishu / official-lark / mixed-transition / broken-state` 哪一类
+
+推荐脚本：
+
+```bash
+python3 scripts/scan_openclaw_compat.py --config ~/.openclaw/openclaw.json
+```

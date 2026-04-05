@@ -35,5 +35,6 @@ echo
 echo "安装完成。下一步："
 echo "1) 到 $DEST_DIR 阅读 README.md"
 echo "2) 直接告诉 OpenClaw：我已经创建好了这批飞书机器人，帮我接成 OpenClaw 多 Agent，先给我预览，再执行。"
-echo "3) 如果要排查根因，先运行：python3 $DEST_DIR/scripts/inspect_openclaw_multi_agent.py --config ~/.openclaw/openclaw.json"
-echo "4) 如果要巡检，直接说：帮我检查一下当前这套飞书多 Agent 配置有没有问题。"
+echo "3) 如果存在版本/插件/字段结构漂移风险，先运行：python3 $DEST_DIR/scripts/scan_openclaw_compat.py --config ~/.openclaw/openclaw.json"
+echo "4) 如果要排查根因，再运行：python3 $DEST_DIR/scripts/inspect_openclaw_multi_agent.py --config ~/.openclaw/openclaw.json"
+echo "5) 如果要巡检，直接说：帮我检查一下当前这套飞书多 Agent 配置有没有问题。"

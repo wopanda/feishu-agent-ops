@@ -54,6 +54,16 @@
       "name": "inspect_script_exists",
       "path": "scripts/inspect_openclaw_multi_agent.py",
       "type": "file_exists"
+    },
+    {
+      "name": "compat_scan_script_exists",
+      "path": "scripts/scan_openclaw_compat.py",
+      "type": "file_exists"
+    },
+    {
+      "name": "compat_scan_example_exists",
+      "path": "examples/output-compat-scan.json",
+      "type": "file_exists"
     }
   ]
 }
