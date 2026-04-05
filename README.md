@@ -267,6 +267,7 @@ python3 scripts/apply_real.py --patch-preview examples/output-patch-preview.json
 
 拟变更预览输出样例见：
 - `examples/output-patch-preview.json`
+- `examples/output-patch-preview-full.json`（完整 bootstrap patch 样例，用于更真实的 apply / verify 演示）
 
 执行计划 dry-run 输出样例见：
 - `examples/output-apply-plan-dry-run.json`
@@ -313,6 +314,7 @@ Secret 流设计说明见：
 
 拟变更预览输出样例见：
 - `examples/output-patch-preview.json`
+- `examples/output-patch-preview-full.json`
 
 落地后验证清单样例见：
 - `examples/output-verify-setup-checklist.json`

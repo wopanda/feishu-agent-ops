@@ -116,6 +116,11 @@
       "type": "file_exists"
     },
     {
+      "name": "patch_preview_full_example_exists",
+      "path": "examples/output-patch-preview-full.json",
+      "type": "file_exists"
+    },
+    {
       "name": "apply_plan_dry_run_example_exists",
       "path": "examples/output-apply-plan-dry-run.json",
       "type": "file_exists"
