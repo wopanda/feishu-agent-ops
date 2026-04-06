@@ -21,14 +21,27 @@ def exists(path: str) -> bool:
 def collect_accounts(feishu_cfg: Dict[str, Any]) -> List[Dict[str, Any]]:
     out = []
     accounts = feishu_cfg.get("accounts") or {}
-    for account_id, cfg in accounts.items():
+
+    if isinstance(accounts, list):
+        iterable = []
+        for item in accounts:
+            if isinstance(item, dict) and item.get("accountId"):
+                iterable.append((item.get("accountId"), item))
+    else:
+        iterable = list(accounts.items())
+
+    for account_id, cfg in iterable:
         cfg = cfg or {}
+        display_name = cfg.get("name") or cfg.get("botName")
+        allow_from_path = Path(expand(f"~/.openclaw/credentials/feishu-{account_id}-allowFrom.json"))
         out.append({
             "accountId": account_id,
-            "botName": cfg.get("botName"),
+            "botName": display_name,
+            "name": display_name,
             "enabled": bool(cfg.get("enabled", True)),
             "hasCredentials": bool(cfg.get("appId") and cfg.get("appSecret")),
             "dmPolicy": cfg.get("dmPolicy"),
+            "allowFromExists": allow_from_path.exists(),
         })
     return out
 
@@ -88,14 +101,9 @@ def build_warnings(session_dm_scope: str, feishu_accounts: List[Dict[str, Any]],
     return warnings
 
 
-def main() -> None:
-    ap = argparse.ArgumentParser(description="Scan current OpenClaw config into observed-state structure.")
-    ap.add_argument("--config", default="~/.openclaw/openclaw.json", help="Path to openclaw.json")
-    ap.add_argument("--pretty", action="store_true", help="Pretty-print JSON")
-    args = ap.parse_args()
-
-    config_path = Path(expand(args.config)).resolve()
-    obj = load_json(config_path)
+def scan_current_state(config_path: str) -> Dict[str, Any]:
+    config_path_obj = Path(expand(config_path)).resolve()
+    obj = load_json(config_path_obj)
 
     session = obj.get("session") or {}
     bindings = obj.get("bindings") or []
@@ -107,8 +115,8 @@ def main() -> None:
     agents = collect_agents(agent_list)
     warnings = build_warnings(session.get("dmScope"), feishu_accounts, feishu_bindings, agents)
 
-    observed = {
-        "config": str(config_path),
+    return {
+        "config": str(config_path_obj),
         "session": {
             "dmScope": session.get("dmScope")
         },
@@ -121,6 +129,15 @@ def main() -> None:
         "bindings": feishu_bindings,
         "warnings": warnings,
     }
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser(description="Scan current OpenClaw config into observed-state structure.")
+    ap.add_argument("--config", default="~/.openclaw/openclaw.json", help="Path to openclaw.json")
+    ap.add_argument("--pretty", action="store_true", help="Pretty-print JSON")
+    args = ap.parse_args()
+
+    observed = scan_current_state(args.config)
 
     if args.pretty:
         print(json.dumps(observed, ensure_ascii=False, indent=2))

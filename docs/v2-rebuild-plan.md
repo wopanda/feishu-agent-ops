@@ -319,6 +319,7 @@ Skill：
    - Agent 模式（绑定已有 / 新建）
 6. **异常场景才根因优先**：不要把 root-cause-first 强塞给新增/扩容用户。
 7. **前台简洁，后台扎实**：用户看到的是流畅分步，底层是确定性引擎。
+8. **单入口流水线**：plan 类请求统一走 `run_plan_pipeline.py`，不要让 LLM 自己拼 stage 顺序或同时跑两套模式。
 
 ---
 
@@ -336,6 +337,7 @@ Skill：
 - `build_desired_state.py`
 - `validate_plan.py`
 - `generate_patch.py`
+- `run_plan_pipeline.py`（单入口串起 normalize → observed → desired → validate → patch → verify，失败即停）
 
 ### Phase 3：再补体验层
 - 场景化 examples

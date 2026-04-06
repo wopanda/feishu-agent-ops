@@ -26,7 +26,7 @@ def generate_patch_preview(desired: Dict[str, Any]) -> Dict[str, Any]:
             "value": {
                 "appId": account.get("appId"),
                 "appSecret": "<redacted-at-preview>",
-                "botName": account.get("botName"),
+                "name": account.get("name") or account.get("botName"),
                 "enabled": True,
             },
         })

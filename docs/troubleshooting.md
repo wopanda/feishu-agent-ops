@@ -2,12 +2,24 @@
 
 ## 常见问题
 
+### 0. 接入过程跑很久，还连续出 JSON 错
+优先检查：
+- 是否让 LLM 同时跑了两套 plan 链（如 `bind-existing` 与 `create-new`）
+- 是否存在单入口流水线；若没有，应统一改为 `run_plan_pipeline.py`
+- 每一阶段输出是否都做了 schema / 结构校验，失败后是否立即停止
+
+处理原则：
+- 新增 / 扩容类请求只允许一条确定性流水线
+- `validate_plan` fail 时直接停，不继续让 LLM 手工补洞
+
 ### 1. bot 已创建，但不回复
 优先检查：
 - `channels.feishu.accounts` 是否存在该 `accountId`
 - `bindings` 是否把该 `accountId` 绑定到正确 `agentId`
 - `appId / appSecret` 是否填错
 - 是否完成真实飞书侧接入与权限配置
+- **是否出现 `not paired` / `sender not allowed`，以及 allowFrom / pairing 是否命中真实 sender**
+- `allowFrom / pairing` 是否放行了**真实入站 sender_id**（日志若出现 `not paired`，先查这里）
 
 ### 2. 回复了，但走错 Agent
 优先检查：

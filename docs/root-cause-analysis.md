@@ -60,6 +60,13 @@
 
 ## 当前版本的修正思路
 
+### 0. 先把编排顺序代码化
+对新增 / 扩容类请求，先统一走单入口流水线：
+
+`normalize -> scan_current_state -> build_desired_state -> validate_plan -> generate_patch -> verify_setup`
+
+不再让 LLM 自己决定这几步谁先谁后，也不允许同一轮同时产出两套互相冲突的 `agentMode` 计划。
+
 ### 1. 新增 `root-cause`
 让技能先给：
 - 表面症状
@@ -79,6 +86,14 @@
 而不是：
 
 `inspect -> repair`
+
+### 4. 把 access/pairing 检查前置到接入验证
+新增 / 扩容后，验证链必须显式检查：
+- allowFrom 文件是否存在
+- 当前 sender 是否已放行
+- pairing 是否仍有 pending 请求
+
+这样可以在 bot “不回复” 时第一时间定位到 `not paired`，而不是先怀疑模型、目录或配置 patch。
 
 ## 当前真实环境中已识别的高频根因示例
 

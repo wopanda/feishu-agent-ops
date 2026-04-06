@@ -5,6 +5,12 @@
 
 ## 执行顺序（固定）
 
+### Step 0. 先走单入口编排
+对新增 / 扩容请求，统一走：
+- `run_plan_pipeline.py`
+- 由脚本串起 normalize / observed / desired / validate / patch-preview / verify-checklist
+- `validate_plan` fail 时立即停，不继续 apply
+
 ### Step 1. 抓全局证据
 - `openclaw status`
 - 当前 `session.dmScope`
@@ -38,6 +44,7 @@
 - 配置闭环是否恢复
 - 至少 1 个目标 bot 实测回复
 - 是否还有高优先级告警
+- **allowFrom / pairing 是否已覆盖真实 sender**
 
 ## 输出模板
 按 `templates/root-cause-report.md` + `templates/repair-report.md` 输出。

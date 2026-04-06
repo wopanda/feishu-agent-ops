@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import json
+import re
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -9,8 +10,24 @@ def load_json(path: str) -> Dict[str, Any]:
     return json.loads(Path(path).read_text())
 
 
+def slugify_identifier(value: str) -> str:
+    text = (value or "").strip().lower()
+    text = re.sub(r"[^a-z0-9]+", "-", text)
+    text = re.sub(r"-+", "-", text).strip("-")
+    if text and text[0].isdigit():
+        text = f"agent-{text}"
+    return text
+
+
 def suggest_agent_id(bot: Dict[str, Any]) -> str:
-    return (bot.get("agentId") or bot.get("accountId") or bot.get("roleName") or "agent").strip().lower().replace(" ", "-")
+    explicit = bot.get("agentId")
+    if explicit:
+        return explicit
+    for candidate in [bot.get("accountId"), bot.get("roleName"), bot.get("botName")]:
+        slug = slugify_identifier(candidate or "")
+        if slug:
+            return slug
+    return "agent"
 
 
 def build_workspace(agent_id: str) -> str:
@@ -21,19 +38,48 @@ def build_agent_dir(agent_id: str) -> str:
     return f"~/.openclaw/agents/{agent_id}/agent"
 
 
+def _existing_account_ids(obs: Dict[str, Any]) -> set[str]:
+    return {a.get("accountId") for a in ((obs.get("feishu") or {}).get("accounts") or []) if a.get("accountId")}
+
+
+def _existing_agent_ids(obs: Dict[str, Any]) -> set[str]:
+    return {a.get("id") for a in (obs.get("agents") or []) if a.get("id")}
+
+
+def _existing_pairs(obs: Dict[str, Any]) -> set[tuple[str, str]]:
+    return {
+        (b.get("accountId"), b.get("agentId"))
+        for b in ((obs.get("feishu") or {}).get("bindings") or [])
+        if b.get("accountId") and b.get("agentId")
+    }
+
+
+def _build_diagnose_actions(req: Dict[str, Any], obs: Dict[str, Any]) -> List[str]:
+    actions: List[str] = []
+    warnings = obs.get("warnings") or []
+    if any("dmScope" in w for w in warnings):
+        actions.append("inspect dmScope before any repair")
+    actions.append("inspect account-binding closure")
+    actions.append("inspect workspace and agentDir completeness")
+    actions.append("inspect allowFrom/pairing evidence for target bot if runtime says not paired")
+    if req.get("repairAfterDiagnosis"):
+        actions.append("prepare minimal repair plan after root-cause confirmation")
+    return actions
+
+
 def build_desired_state(req: Dict[str, Any], obs: Dict[str, Any]) -> Dict[str, Any]:
     scenario = req.get("scenario")
     routing_mode = req.get("routingMode") or "account"
     agent_mode = req.get("agentMode") or "create-new"
 
-    existing_agent_ids = {a.get("id") for a in (obs.get("agents") or []) if a.get("id")}
-    existing_account_ids = {a.get("accountId") for a in ((obs.get("feishu") or {}).get("accounts") or []) if a.get("accountId")}
-    existing_pairs = {(b.get("accountId"), b.get("agentId")) for b in ((obs.get("feishu") or {}).get("bindings") or [])}
+    existing_agent_ids = _existing_agent_ids(obs)
+    existing_account_ids = _existing_account_ids(obs)
+    existing_pairs = _existing_pairs(obs)
 
     planned_agents: List[Dict[str, Any]] = []
     planned_accounts: List[Dict[str, Any]] = []
     planned_bindings: List[Dict[str, Any]] = []
-    warnings: List[str] = []
+    warnings: List[str] = list(req.get("warnings") or [])
 
     if scenario == "diagnose":
         return {
@@ -50,30 +96,38 @@ def build_desired_state(req: Dict[str, Any], obs: Dict[str, Any]) -> Dict[str, A
             "plannedAgents": [],
             "plannedAccounts": [],
             "plannedBindings": [],
-            "nextActions": [
-                "run compat-scan if needed",
-                "inspect root-cause candidates",
-                "prepare minimal repair plan",
-            ],
-            "warnings": req.get("warnings") or [],
+            "nextActions": _build_diagnose_actions(req, obs),
+            "warnings": warnings,
         }
 
     for bot in req.get("bots") or []:
         account_id = bot.get("accountId")
-        agent_id = bot.get("agentId") if agent_mode == "bind-existing" and bot.get("agentId") else suggest_agent_id(bot)
+        requested_agent_id = bot.get("agentId")
+
+        if requested_agent_id:
+            effective_agent_mode = "bind-existing"
+        else:
+            effective_agent_mode = agent_mode
+
+        agent_id = requested_agent_id if effective_agent_mode == "bind-existing" else suggest_agent_id(bot)
 
         if account_id not in existing_account_ids:
             planned_accounts.append({
                 "accountId": account_id,
                 "botName": bot.get("botName"),
                 "appId": bot.get("appId"),
+                "name": bot.get("botName"),
                 "dmPolicy": "open",
                 "source": "request",
             })
         else:
             warnings.append(f"account already exists: {account_id}")
 
-        if agent_mode == "create-new":
+        if effective_agent_mode == "bind-existing" and not agent_id:
+            warnings.append(f"bind-existing requires explicit agentId: {account_id}")
+            continue
+
+        if effective_agent_mode == "create-new":
             if agent_id not in existing_agent_ids:
                 planned_agents.append({
                     "id": agent_id,
@@ -83,6 +137,8 @@ def build_desired_state(req: Dict[str, Any], obs: Dict[str, Any]) -> Dict[str, A
                 })
             else:
                 warnings.append(f"agent already exists: {agent_id}")
+        elif agent_id not in existing_agent_ids:
+            warnings.append(f"bind-existing requested but agent does not exist yet: {agent_id}")
 
         pair = (account_id, agent_id)
         if pair not in existing_pairs:
@@ -114,9 +170,9 @@ def build_desired_state(req: Dict[str, Any], obs: Dict[str, Any]) -> Dict[str, A
             "review preview",
             "confirm before apply",
             "backup config before patch",
-            "verify at least one target bot after apply",
+            "verify runtime path including allowFrom/pairing after apply",
         ],
-        "warnings": (req.get("warnings") or []) + warnings,
+        "warnings": warnings,
     }
 
 
