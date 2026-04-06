@@ -1,157 +1,217 @@
 # Feishu Agent Ops
 
-把飞书机器人接成 OpenClaw 多 Agent。  
-支持添加机器人、巡检、根因排查和修复。
+把飞书机器人整理并接入 OpenClaw 多 Agent。
+
+它前台只处理两件事：
+- **添加机器人**
+- **排查问题**
+
+重点不是让用户先理解一堆配置项，
+而是：**先给最少必要信息，系统先扫描当前环境，再给方案预览或排查结论。**
 
 ---
 
-## 当前改造重点
+## 这是什么
 
-这版不再把 LLM 当编排器主脑。
-现在的原则是：
+这是一个偏产品化的 Feishu 接入 / 排障 skill。
 
-- **LLM 负责理解用户意图和补最少信息**
-- **脚本负责归一化、状态扫描、计划构造、校验、patch 预览、执行、验证**
-- **一旦 schema / 分支不合法，就失败即停，不继续让 LLM 猜**
+它适合的场景：
+- 你想新增一个飞书机器人接进 OpenClaw
+- 你已经有多机器人环境，但出现了不回复 / 串路由 / 绑错 Agent / 配置不闭环
+- 你想先看预览，再决定要不要真正改配置
 
-### 已下沉到代码层的关键逻辑
-- 场景收敛：`bootstrap / expand / diagnose`
-- 路由模式：`account / group / mixed`
-- Agent 模式：`bind-existing / create-new`
-- `accountId` 自动生成
-- 当前状态扫描（observed state）
-- 目标状态构造（desired state）
-- patch 预览生成
-- 计划校验
-- 接入后验证清单生成
+它不要求用户先理解这些内部概念：
+- `accountId`
+- `agentId`
+- `routingMode`
+- `bind-existing / create-new`
+- patch / desired-state / observed-state
 
-### 特别修正
-本次接入 `rixin8` 暴露出两个真实问题，这版已针对性修正：
-
-1. **不能再让同一轮里同时漂出 `bind-existing` 和 `create-new` 两条链**
-2. **新 bot 不回复时，必须把 `allowFrom / pairing / not paired` 提到高优先级验证项**
+这些都应该尽量由 skill 先判断、先扫描、先给建议。
 
 ---
 
-## 先说重点：你只管提供必要信息
+## 第一次成功路径
 
-前台只保留 2 个入口：
-- 添加机器人
-- 排查问题
+README 首页只保留两条主入口。
 
-你不需要判断这是“新增”还是“扩容”。
-系统会先扫描当前环境，再给你最合适的接入方案或排查结论。
+### 入口 A：添加机器人
 
-### 入口 1：添加机器人
-最低只需要这些：
+你最低只需要准备 3 个信息：
 
-1. **appId**  
-   去哪找：飞书开放平台 → 对应应用 → **凭证与基础信息** → App ID
-2. **appSecret**  
-   去哪找：同一页 → App Secret
-3. **botName**  
-   直接给我机器人名称 / 应用名称就行
+1. **appId**
+2. **appSecret**
+3. **botName**
 
-### 这些信息现在默认可选
-- **accountId**：OpenClaw 里的内部代号，**你不会起名也没关系，我可以帮你生成**
-- **agentId**：只有你明确想绑定到某个已有 Agent 时才需要
-- **roleName / model / isDefault**：没有就先不填
-- **chatId**：只有你明确要做“群聊级绑定”时才需要
+去哪里找：
 
-### 入口 2：排查问题
-默认连上面这些都不用先给。
+**飞书开放平台 → 对应应用 → 凭证与基础信息**
 
-你只要直接说：
+你会在那里看到：
+- App ID
+- App Secret
+
+### 直接这样发
 
 ```text
-这套多飞书机器人有问题，你先帮我检查。
-```
-
-我应该先做只读扫描，再决定后面要不要补信息。
-
----
-
-## 现在内部固定流水线
-
-### 新增 / 扩容
-`normalize_request -> scan_current_state -> build_desired_state -> validate_plan -> generate_patch -> verify_setup`
-
-### 排障 / 修复
-`compat / state scan -> root-cause -> minimal repair plan -> verify`
-
-### 硬约束
-- 中间 JSON 必须合法
-- 非法就停，不继续 apply
-- 预览先于写入
-- 写入先于验证
-- 运行不回复时，优先检查 `allowFrom / pairing`
-
----
-
-## 你现在可以直接这样用
-
-### 场景 A：我想添加一个机器人
-直接发：
-
-```text
-我想添加一个飞书机器人。
-appId：xxx
-appSecret：xxx
-botName：日新调研
+我想添加一个飞书机器人：
+- appId：cli_xxx
+- appSecret：xxx
+- botName：日新调研
 其他你帮我补。
 ```
 
-### 场景 B：我不清楚 accountId / agentId 怎么填
-直接发：
+### 你会得到什么
 
-```text
-我不会填 accountId / agentId，你先根据当前环境帮我判断，再给我预览。
-```
-
-### 场景 C：我这套环境有异常
-直接发：
-
-```text
-这套多飞书机器人现在有异常，你先检查，不要直接乱改。
-```
+系统应该先扫描当前环境，再给你：
+- 建议的 `accountId`
+- 是绑定已有 Agent，还是新建 Agent
+- 变更预览
+- 确认后再落地
+- 接入后的验证清单
 
 ---
 
-## 你会得到什么
+### 入口 B：排查问题
 
-### 添加机器人
-- 自动补 accountId
-- 判断绑已有 Agent 还是新建 Agent
-- 变更预览
-- 确认后再落地
-- 接入后验证清单（含 allowFrom / pairing 检查）
+排障时，默认不要先让用户补一堆字段。
 
-### 排障
+### 直接这样发
+
+```text
+这套多飞书机器人有问题：
+- 现象：某个 bot 不回复 / 串会话 / 路由错
+- 先帮我检查，不要直接改
+```
+
+如果用户连 bot 名都说不清，也不应该卡住。
+应先做只读扫描，再决定后面要不要补信息。
+
+### 你会得到什么
+
 - 当前现场扫描结果
 - 根因判断
-- 修复优先级
 - 最小修复建议
 - 修后验证路径
 
 ---
 
-## 一句话原则
+## 默认哪些信息不用先问
 
-> 你只需要把需求和必要信息说出来；系统先扫描当前环境，再给最合适的方案和预览；判断与 patch 尽量代码化，解释与确认留在 skill 层。
+第一次接入时，默认只先收：
+- `appId`
+- `appSecret`
+- `botName`
+
+这些信息默认可后补 / 可推断：
+- **accountId**：OpenClaw 里的内部代号，不会填可以让 skill 生成建议值
+- **agentId**：只有用户明确说“绑定已有 Agent”时才需要
+- **roleName / model / isDefault**：没有就先不填
+- **chatId**：只有明确要做群聊级绑定时才需要
+
+原则：
+- 能扫描，就先扫描
+- 能推断，就不要追问
+- 能安全自动做，就不要把用户拖进内部实现细节里
 
 ---
 
-## 推荐的确定性执行方式（新）
+## 这个 skill 内部怎么工作
 
-新增 / 扩容类请求，默认不要再手工串：
-- normalize
-- observed-state scan
-- desired-state build
-- validate
-- patch preview
-- verify checklist
+对用户来说，它只有两个入口。
 
-现在统一建议走单入口：
+对系统来说，它背后是确定性流水线：
+
+### 新增 / 扩容
+
+```text
+normalize_request
+-> scan_current_state
+-> build_desired_state
+-> validate_plan
+-> generate_patch
+-> verify_setup
+```
+
+### 排障 / 修复
+
+```text
+compat / state scan
+-> root-cause
+-> minimal repair plan
+-> verify
+```
+
+设计原则：
+- 中间 JSON 不合法就失败即停
+- 预览先于写入
+- 写入先于验证
+- 不再让 LLM 在非法分支上继续猜
+
+---
+
+## 重要行为约束
+
+### 1. 不要让用户在一开始就选内部模式
+
+尤其不要一上来就逼用户判断：
+- 我这是 bootstrap 还是 expand
+- 我这是 bind-existing 还是 create-new
+- 我该填哪个 agentId
+
+这类判断应优先由 skill 结合当前环境来完成。
+
+### 2. 绑定已有 Agent 时，才需要显式 `agentId`
+
+如果用户明确说：
+- “绑定到已有 Agent”
+- “挂到某个现成 Agent 上”
+
+才进入 `bind-existing` 模式。
+
+否则默认应该先扫描，再判断要不要新建 Agent。
+
+### 3. bot 不回复时，运行层检查要提前
+
+遇到“配置看起来都对，但 bot 不回复”，优先检查：
+- `allowFrom`
+- pairing / not paired
+- workspace / agentDir 是否存在
+- account 与 binding 是否闭环
+
+不要只停留在配置层。
+
+---
+
+## 推荐的最小调用模板
+
+### 模板 1：新增一个机器人
+
+```text
+我想添加一个飞书机器人：
+- appId：cli_xxx
+- appSecret：xxx
+- botName：日新调研
+其他你帮我补。
+```
+
+### 模板 2：我不会填 accountId / agentId
+
+```text
+我不会填 accountId / agentId，你先根据当前环境帮我判断，再给我预览。
+```
+
+### 模板 3：先排障，不要直接改
+
+```text
+这套多飞书机器人有异常，你先检查，不要直接乱改。
+```
+
+---
+
+## 给维护者的确定性执行方式
+
+如果你是在仓库里手工验证，新增 / 扩容默认走单入口：
 
 ```bash
 python3 scripts/run_plan_pipeline.py \
@@ -161,13 +221,13 @@ python3 scripts/run_plan_pipeline.py \
 ```
 
 这样可以避免：
-- 同一轮里同时跑出 `bind-existing` / `create-new` 两套互相冲突的链
-- 中间 JSON 一步错了，后面还继续让 LLM 猜
-- 校验失败后仍然进入 apply / 手工补洞
+- 同一轮里同时漂出 `bind-existing` / `create-new` 两套冲突链路
+- 中间 JSON 已经非法，但后面还继续让模型补洞
+- 校验失败后仍然误入 apply
 
-## 运行层验证（新）
+### 运行层验证
 
-如果 bot 已接入但“不回复”，不要只查配置；先直接查运行放行链：
+如果 bot 已接入但“不回复”，优先直接查运行放行链：
 
 ```bash
 python3 scripts/verify_setup.py \
@@ -187,46 +247,17 @@ python3 scripts/verify_setup.py \
 
 ---
 
-## 推荐的确定性执行方式（新）
+## 当前版本的产品化改造重点
 
-新增 / 扩容类请求，默认不要再手工串：
-- normalize
-- observed-state scan
-- desired-state build
-- validate
-- patch preview
-- verify checklist
+这版重点不是继续堆概念，
+而是把首次接入路径收窄成：
 
-现在统一建议走单入口：
+1. 用户只给最少必要信息
+2. 系统先扫描当前环境
+3. 系统先给方案预览或排查结论
+4. 真正会影响现有路由 / 默认 Agent / 会话连续性的改动，再确认
 
-```bash
-python3 scripts/run_plan_pipeline.py \
-  --input <request.json> \
-  --config ~/.openclaw/openclaw.json \
-  --pretty
-```
+换句话说：
 
-这样可以避免：
-- 同一轮里同时跑出 `bind-existing` / `create-new` 两套互相冲突的链
-- 中间 JSON 一步错了，后面还继续让 LLM 猜
-- 校验失败后仍然进入 apply / 手工补洞
-
-## 运行层验证（新）
-
-如果 bot 已接入但“不回复”，不要只查配置；先直接查运行放行链：
-
-```bash
-python3 scripts/verify_setup.py \
-  --config ~/.openclaw/openclaw.json \
-  --account-id <accountId> \
-  --sender-id <sender_open_id> \
-  --pretty
-```
-
-这一步会直接检查：
-- account 是否存在
-- binding 是否存在
-- workspace / agentDir 是否存在
-- allowFrom 文件是否存在
-- 当前 sender 是否已被 allowFrom 放行
-- pairing 是否仍有 pending 请求
+> 这不是一个让用户手工拼配置的 skill，
+> 而是一个先帮用户判断、再帮用户落地的 Feishu 接入 / 排障 skill。
