@@ -1,13 +1,5 @@
-# Inspect Report
+# Inspect Result
 
-## 当前状态
-- 
-
-## 发现的问题
-- 
-
-## 风险判断
-- 
-
-## 建议动作
-- 
+- 结论：{{result}}
+- 依据：{{evidence}}
+- {{next_step_optional}}

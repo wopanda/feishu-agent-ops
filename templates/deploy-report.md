@@ -1,13 +1,5 @@
-# Deploy Report
+# Deploy Result
 
-## 已做改动
-- 
-
-## 验证依据
-- 
-
-## 风险 / 未完成项
-- 
-
-## 下一步建议
-- 
+- 结论：{{result}}
+- 依据：{{evidence}}
+- {{next_step_optional}}

@@ -1,19 +1,5 @@
-# Root Cause Report
+# Root Cause Result
 
-## 表面症状
-- 
-
-## 根因结论
-- 
-
-## 证据
-- 
-
-## 优先修复顺序
-- 
-
-## 不修会继续发生什么
-- 
-
-## 下一步建议
-- 
+- 根因：{{result}}
+- 证据：{{evidence}}
+- {{next_step_optional}}

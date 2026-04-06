@@ -1,13 +1,5 @@
-# Repair Report
+# Repair Result
 
-## 已修复
-- 
-
-## 未修复
-- 
-
-## 验证依据
-- 
-
-## 下一步建议
-- 
+- 结论：{{result}}
+- 依据：{{evidence}}
+- {{next_step_optional}}
