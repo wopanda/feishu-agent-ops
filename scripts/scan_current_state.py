@@ -80,7 +80,32 @@ def collect_agents(agent_list: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     return out
 
 
-def build_warnings(session_dm_scope: str, feishu_accounts: List[Dict[str, Any]], feishu_bindings: List[Dict[str, Any]], agents: List[Dict[str, Any]]) -> List[str]:
+def detect_implicit_default_main(feishu_cfg: Dict[str, Any], feishu_accounts: List[Dict[str, Any]], feishu_bindings: List[Dict[str, Any]], agents: List[Dict[str, Any]]) -> Dict[str, Any]:
+    has_top_level_credentials = bool(feishu_cfg.get("appId") and feishu_cfg.get("appSecret"))
+    account_ids = {a.get("accountId") for a in feishu_accounts if a.get("accountId")}
+    has_default_account = "default" in account_ids
+    default_binding = next((b for b in feishu_bindings if b.get("accountId") == "default"), None)
+
+    agent_ids = [a.get("id") for a in agents if a.get("id")]
+    inferred_main_agent = "main" if "main" in agent_ids else (agent_ids[0] if len(agent_ids) == 1 else None)
+
+    needs_migration = bool(
+        has_top_level_credentials
+        and not has_default_account
+        and not default_binding
+        and inferred_main_agent
+    )
+
+    return {
+        "hasTopLevelCredentials": has_top_level_credentials,
+        "hasDefaultAccount": has_default_account,
+        "hasDefaultBinding": bool(default_binding),
+        "inferredMainAgentId": inferred_main_agent,
+        "needsSingleToMultiMigration": needs_migration,
+    }
+
+
+def build_warnings(session_dm_scope: str, feishu_accounts: List[Dict[str, Any]], feishu_bindings: List[Dict[str, Any]], agents: List[Dict[str, Any]], migration: Dict[str, Any]) -> List[str]:
     warnings: List[str] = []
     nondefault_accounts = [a for a in feishu_accounts if a.get("accountId") != "default"]
     bound_accounts = {b.get("accountId") for b in feishu_bindings if b.get("accountId")}
@@ -98,6 +123,9 @@ def build_warnings(session_dm_scope: str, feishu_accounts: List[Dict[str, Any]],
         if agent.get("agentDir") and not agent.get("agentDirExists"):
             warnings.append(f"agentDir missing: {agent.get('id')}")
 
+    if migration.get("needsSingleToMultiMigration"):
+        warnings.append("single-to-multi migration needed: top-level feishu credentials are not yet solidified into accounts.default + explicit binding")
+
     return warnings
 
 
@@ -113,7 +141,8 @@ def scan_current_state(config_path: str) -> Dict[str, Any]:
     feishu_accounts = collect_accounts(feishu_cfg)
     feishu_bindings = [b for b in collect_bindings(bindings) if b.get("channel") == "feishu"]
     agents = collect_agents(agent_list)
-    warnings = build_warnings(session.get("dmScope"), feishu_accounts, feishu_bindings, agents)
+    migration = detect_implicit_default_main(feishu_cfg, feishu_accounts, feishu_bindings, agents)
+    warnings = build_warnings(session.get("dmScope"), feishu_accounts, feishu_bindings, agents, migration)
 
     return {
         "config": str(config_path_obj),
@@ -122,11 +151,17 @@ def scan_current_state(config_path: str) -> Dict[str, Any]:
         },
         "feishu": {
             "topLevelKeys": sorted(feishu_cfg.keys()),
+            "hasTopLevelCredentials": migration.get("hasTopLevelCredentials"),
+            "topLevelCredentialPreview": {
+                "appId": feishu_cfg.get("appId"),
+                "name": feishu_cfg.get("name") or feishu_cfg.get("botName"),
+            } if migration.get("hasTopLevelCredentials") else None,
             "accounts": feishu_accounts,
             "bindings": feishu_bindings,
         },
         "agents": agents,
         "bindings": feishu_bindings,
+        "migration": migration,
         "warnings": warnings,
     }
 

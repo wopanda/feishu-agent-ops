@@ -56,11 +56,14 @@
 ### 系统应该怎么处理
 1. 识别为新增 / 扩容线
 2. 扫描当前环境
-3. 给出建议的 `accountId`
-4. 判断是绑定已有 Agent，还是新建 Agent
-5. 给出变更预览
-6. 用户确认后再落地
-7. 给验证清单
+3. 如果当前还是“单龙虾默认态”，先自动触发 **1→N migration**：
+   - 把顶层 Feishu 主凭据固化进 `accounts.default`
+   - 给原 main agent 增加显式 `accountId: default` binding
+4. 给出建议的 `accountId`
+5. 判断是绑定已有 Agent，还是新建 Agent
+6. 给出变更预览
+7. 用户确认后再落地
+8. 给验证清单
 
 ### 第一次成功至少要满足
 - 预览可生成
@@ -150,6 +153,7 @@
 ```text
 normalize_request
 -> scan_current_state
+-> detect single-to-multi migration need
 -> build_desired_state
 -> validate_plan
 -> generate_patch
@@ -168,6 +172,7 @@ scan_openclaw_compat
 
 设计要求：
 - 中间 JSON 非法就失败即停
+- 从 1 只进入多只时，必须先把原默认主机器人显式固化
 - 预览先于写入
 - 写入先于验证
 - 不让 LLM 在非法分支上继续补洞

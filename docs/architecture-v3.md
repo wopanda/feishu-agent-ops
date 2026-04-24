@@ -39,6 +39,7 @@
 
 ### 后台原则
 - 由确定性流水线负责构建目标状态与 patch
+- 若检测到当前仍是单龙虾默认态，先自动执行 1→N migration 固化旧主机器人
 - 由代码校验决定是否允许继续
 - 至少 1 个新 bot 完成真实回复验证才算闭环
 
@@ -104,6 +105,7 @@ LLM 可以提建议，但落配置必须经过代码校验。
 ```text
 normalize_request
 -> scan_current_state
+-> detect single-to-multi migration need
 -> build_desired_state
 -> validate_plan
 -> generate_patch
@@ -131,6 +133,22 @@ scan_openclaw_compat
 - 文档承诺与当前脚本能力基本一致
 - 至少走通一次新增预览校核
 - 至少走通一次排障验证校核
+
+---
+
+## 1→N migration 补充规则
+
+当系统满足以下条件时，应视为仍处于“单龙虾默认态”：
+- `channels.feishu` 顶层仍持有主 `appId/appSecret`
+- 还没有 `accounts.default`
+- 还没有 `accountId: default` 的显式 binding
+- 当前正在新增第 2 只或更多龙虾
+
+此时新增线不能只做增量添加，必须先自动补两件事：
+1. 把顶层主凭据固化进 `accounts.default`
+2. 给原 main agent 增加显式 `accountId: default` binding
+
+否则就会出现混合状态：原主机器人仍隐式默认，新机器人显式绑定，导致主机器人失焦。
 
 ---
 

@@ -67,6 +67,48 @@ def _build_diagnose_actions(req: Dict[str, Any], obs: Dict[str, Any]) -> List[st
     return actions
 
 
+def _should_trigger_single_to_multi_migration(req: Dict[str, Any], obs: Dict[str, Any]) -> bool:
+    migration = obs.get("migration") or {}
+    scenario = req.get("scenario")
+    bots = req.get("bots") or []
+    return bool(
+        scenario in {"bootstrap", "expand"}
+        and bots
+        and migration.get("needsSingleToMultiMigration")
+    )
+
+
+def _append_single_to_multi_migration(planned_accounts: List[Dict[str, Any]], planned_bindings: List[Dict[str, Any]], warnings: List[str], obs: Dict[str, Any]) -> None:
+    migration = obs.get("migration") or {}
+    feishu = obs.get("feishu") or {}
+    top = feishu.get("topLevelCredentialPreview") or {}
+    main_agent_id = migration.get("inferredMainAgentId")
+
+    if not main_agent_id:
+        warnings.append("single-to-multi migration needed but could not infer main agent id")
+        return
+
+    planned_accounts.append({
+        "accountId": "default",
+        "botName": top.get("name") or "default",
+        "appId": top.get("appId"),
+        "name": top.get("name") or "default",
+        "dmPolicy": "open",
+        "source": "single-to-multi-migration",
+        "migrateTopLevelCredentials": True,
+    })
+
+    planned_bindings.append({
+        "agentId": main_agent_id,
+        "accountId": "default",
+        "routingKind": "account",
+        "chatId": None,
+        "source": "single-to-multi-migration",
+    })
+
+    warnings.append("single-to-multi migration injected: top-level feishu credentials will be solidified into accounts.default + explicit default binding")
+
+
 def build_desired_state(req: Dict[str, Any], obs: Dict[str, Any]) -> Dict[str, Any]:
     scenario = req.get("scenario")
     routing_mode = req.get("routingMode") or "account"
@@ -100,6 +142,15 @@ def build_desired_state(req: Dict[str, Any], obs: Dict[str, Any]) -> Dict[str, A
             "warnings": warnings,
         }
 
+    if _should_trigger_single_to_multi_migration(req, obs):
+        _append_single_to_multi_migration(planned_accounts, planned_bindings, warnings, obs)
+        existing_account_ids = set(existing_account_ids)
+        existing_account_ids.add("default")
+        existing_pairs = set(existing_pairs)
+        migration = obs.get("migration") or {}
+        if migration.get("inferredMainAgentId"):
+            existing_pairs.add(("default", migration.get("inferredMainAgentId")))
+
     for bot in req.get("bots") or []:
         account_id = bot.get("accountId")
         requested_agent_id = bot.get("agentId")
@@ -120,6 +171,7 @@ def build_desired_state(req: Dict[str, Any], obs: Dict[str, Any]) -> Dict[str, A
                 "dmPolicy": "open",
                 "source": "request",
             })
+            existing_account_ids.add(account_id)
         else:
             warnings.append(f"account already exists: {account_id}")
 
@@ -135,6 +187,7 @@ def build_desired_state(req: Dict[str, Any], obs: Dict[str, Any]) -> Dict[str, A
                     "agentDir": build_agent_dir(agent_id),
                     "source": "request",
                 })
+                existing_agent_ids.add(agent_id)
             else:
                 warnings.append(f"agent already exists: {agent_id}")
         elif agent_id not in existing_agent_ids:
@@ -149,6 +202,7 @@ def build_desired_state(req: Dict[str, Any], obs: Dict[str, Any]) -> Dict[str, A
                 "chatId": bot.get("chatId"),
                 "source": "request",
             })
+            existing_pairs.add(pair)
         else:
             warnings.append(f"binding already exists: {account_id} -> {agent_id}")
 
