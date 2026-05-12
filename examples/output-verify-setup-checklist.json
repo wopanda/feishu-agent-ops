@@ -1,0 +1,80 @@
+{
+  "mode": "verification-checklist",
+  "configPath": "~/.openclaw/openclaw.json",
+  "summary": {
+    "checkCount": 9,
+    "plannedAgents": 3,
+    "plannedAccounts": 3,
+    "plannedBindings": 3
+  },
+  "checks": [
+    {
+      "id": "config-readable",
+      "kind": "config",
+      "target": "~/.openclaw/openclaw.json",
+      "expectation": "配置文件可读取，且 JSON 结构有效",
+      "autoCheck": false
+    },
+    {
+      "id": "workspace:manager",
+      "kind": "filesystem",
+      "target": "~/.openclaw/workspace-manager",
+      "expectation": "workspace 目录存在",
+      "autoCheck": false
+    },
+    {
+      "id": "agentDir:manager",
+      "kind": "filesystem",
+      "target": "~/.openclaw/agents/manager/agent",
+      "expectation": "agentDir 目录存在",
+      "autoCheck": false
+    },
+    {
+      "id": "workspace:research",
+      "kind": "filesystem",
+      "target": "~/.openclaw/workspace-research",
+      "expectation": "workspace 目录存在",
+      "autoCheck": false
+    },
+    {
+      "id": "agentDir:research",
+      "kind": "filesystem",
+      "target": "~/.openclaw/agents/research/agent",
+      "expectation": "agentDir 目录存在",
+      "autoCheck": false
+    },
+    {
+      "id": "workspace:writer",
+      "kind": "filesystem",
+      "target": "~/.openclaw/workspace-writer",
+      "expectation": "workspace 目录存在",
+      "autoCheck": false
+    },
+    {
+      "id": "agentDir:writer",
+      "kind": "filesystem",
+      "target": "~/.openclaw/agents/writer/agent",
+      "expectation": "agentDir 目录存在",
+      "autoCheck": false
+    },
+    {
+      "id": "bindings-count",
+      "kind": "config",
+      "target": "bindings",
+      "expectation": "bindings 至少新增 3 条目标映射",
+      "autoCheck": false
+    },
+    {
+      "id": "bot-probe",
+      "kind": "runtime",
+      "target": [
+        "manager",
+        "research",
+        "writer"
+      ],
+      "expectation": "至少 1 个目标 bot 能进入待验证列表并完成回复验证",
+      "autoCheck": false
+    }
+  ],
+  "warnings": []
+}

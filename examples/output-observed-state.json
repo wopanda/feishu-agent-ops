@@ -1,0 +1,190 @@
+{
+  "config": "/root/.openclaw/openclaw.json",
+  "session": {
+    "dmScope": "per-channel-peer"
+  },
+  "feishu": {
+    "topLevelKeys": [
+      "accounts",
+      "domain",
+      "enabled",
+      "footer",
+      "replyMode",
+      "streaming"
+    ],
+    "accounts": [
+      {
+        "accountId": "rixin0",
+        "botName": null,
+        "enabled": true,
+        "hasCredentials": true,
+        "dmPolicy": null
+      },
+      {
+        "accountId": "rixin1",
+        "botName": null,
+        "enabled": true,
+        "hasCredentials": true,
+        "dmPolicy": null
+      },
+      {
+        "accountId": "rixin2",
+        "botName": null,
+        "enabled": true,
+        "hasCredentials": true,
+        "dmPolicy": null
+      },
+      {
+        "accountId": "rixin3",
+        "botName": null,
+        "enabled": true,
+        "hasCredentials": true,
+        "dmPolicy": null
+      },
+      {
+        "accountId": "rixin4",
+        "botName": null,
+        "enabled": true,
+        "hasCredentials": true,
+        "dmPolicy": null
+      },
+      {
+        "accountId": "rixin5",
+        "botName": null,
+        "enabled": true,
+        "hasCredentials": true,
+        "dmPolicy": null
+      },
+      {
+        "accountId": "default",
+        "botName": null,
+        "enabled": true,
+        "hasCredentials": false,
+        "dmPolicy": null
+      }
+    ],
+    "bindings": [
+      {
+        "agentId": "rixin0",
+        "accountId": "rixin0",
+        "routingKind": "account",
+        "channel": "feishu"
+      },
+      {
+        "agentId": "manager",
+        "accountId": "rixin1",
+        "routingKind": "account",
+        "channel": "feishu"
+      },
+      {
+        "agentId": "research",
+        "accountId": "rixin2",
+        "routingKind": "account",
+        "channel": "feishu"
+      },
+      {
+        "agentId": "dev",
+        "accountId": "rixin3",
+        "routingKind": "account",
+        "channel": "feishu"
+      },
+      {
+        "agentId": "project",
+        "accountId": "rixin4",
+        "routingKind": "account",
+        "channel": "feishu"
+      },
+      {
+        "agentId": "writer",
+        "accountId": "rixin5",
+        "routingKind": "account",
+        "channel": "feishu"
+      }
+    ]
+  },
+  "agents": [
+    {
+      "id": "rixin0",
+      "workspace": "~/.openclaw/workspace-rixin0",
+      "workspaceExists": true,
+      "agentDir": "~/.openclaw/agents/rixin0/agent",
+      "agentDirExists": true
+    },
+    {
+      "id": "manager",
+      "workspace": "~/.openclaw/workspace-manager",
+      "workspaceExists": true,
+      "agentDir": "~/.openclaw/agents/manager/agent",
+      "agentDirExists": true
+    },
+    {
+      "id": "research",
+      "workspace": "~/.openclaw/workspace-research",
+      "workspaceExists": true,
+      "agentDir": "~/.openclaw/agents/research/agent",
+      "agentDirExists": true
+    },
+    {
+      "id": "dev",
+      "workspace": "~/.openclaw/workspace-dev",
+      "workspaceExists": true,
+      "agentDir": "~/.openclaw/agents/dev/agent",
+      "agentDirExists": true
+    },
+    {
+      "id": "project",
+      "workspace": "~/.openclaw/workspace-project",
+      "workspaceExists": true,
+      "agentDir": "~/.openclaw/agents/project/agent",
+      "agentDirExists": true
+    },
+    {
+      "id": "writer",
+      "workspace": "~/.openclaw/workspace-writer",
+      "workspaceExists": true,
+      "agentDir": "~/.openclaw/agents/writer/agent",
+      "agentDirExists": true
+    }
+  ],
+  "bindings": [
+    {
+      "agentId": "rixin0",
+      "accountId": "rixin0",
+      "routingKind": "account",
+      "channel": "feishu"
+    },
+    {
+      "agentId": "manager",
+      "accountId": "rixin1",
+      "routingKind": "account",
+      "channel": "feishu"
+    },
+    {
+      "agentId": "research",
+      "accountId": "rixin2",
+      "routingKind": "account",
+      "channel": "feishu"
+    },
+    {
+      "agentId": "dev",
+      "accountId": "rixin3",
+      "routingKind": "account",
+      "channel": "feishu"
+    },
+    {
+      "agentId": "project",
+      "accountId": "rixin4",
+      "routingKind": "account",
+      "channel": "feishu"
+    },
+    {
+      "agentId": "writer",
+      "accountId": "rixin5",
+      "routingKind": "account",
+      "channel": "feishu"
+    }
+  ],
+  "warnings": [
+    "multi-account dmScope is not per-account-channel-peer"
+  ]
+}

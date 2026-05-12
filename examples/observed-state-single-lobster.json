@@ -1,0 +1,46 @@
+{
+  "config": "examples/observed-state-single-lobster.json",
+  "session": {
+    "dmScope": "per-account-channel-peer"
+  },
+  "feishu": {
+    "topLevelKeys": ["accounts", "domain", "enabled"],
+    "accounts": [
+      {
+        "accountId": "default-lobster",
+        "botName": "当前入口龙虾",
+        "name": "当前入口龙虾",
+        "enabled": true,
+        "hasCredentials": true,
+        "dmPolicy": null,
+        "allowFromExists": true
+      }
+    ],
+    "bindings": [
+      {
+        "agentId": "default-lobster",
+        "accountId": "default-lobster",
+        "routingKind": "account",
+        "channel": "feishu"
+      }
+    ]
+  },
+  "agents": [
+    {
+      "id": "default-lobster",
+      "workspace": "~/.openclaw/workspace-default-lobster",
+      "workspaceExists": true,
+      "agentDir": "~/.openclaw/agents/default-lobster/agent",
+      "agentDirExists": true
+    }
+  ],
+  "bindings": [
+    {
+      "agentId": "default-lobster",
+      "accountId": "default-lobster",
+      "routingKind": "account",
+      "channel": "feishu"
+    }
+  ],
+  "warnings": []
+}

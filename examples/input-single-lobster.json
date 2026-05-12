@@ -1,0 +1,11 @@
+{
+  "action": "plan",
+  "bots": [
+    {
+      "botName": "测试龙虾",
+      "appId": "cli_xxx_test_lobster",
+      "appSecret": "secret_test_lobster",
+      "roleName": "测试"
+    }
+  ]
+}

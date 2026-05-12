@@ -1,0 +1,13 @@
+{
+  "scenario": "diagnose",
+  "goal": "find_root_cause_before_repair",
+  "symptoms": [
+    "多个 bot 偶尔串会话",
+    "某个 bot 有时不回复",
+    "升级后担心字段结构已经漂移"
+  ],
+  "affectedBots": ["manager", "writer"],
+  "configPath": "~/.openclaw/openclaw.json",
+  "allowReadOnlyScan": true,
+  "repairAfterDiagnosis": false
+}

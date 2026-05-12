@@ -1,0 +1,224 @@
+{
+  "checks": [
+    {
+      "name": "readme_exists",
+      "path": "README.md",
+      "type": "file_exists"
+    },
+    {
+      "name": "skill_exists",
+      "path": "SKILL.md",
+      "type": "file_exists"
+    },
+    {
+      "name": "install_exists",
+      "path": "install.sh",
+      "type": "file_exists"
+    },
+    {
+      "name": "request_schema_exists",
+      "path": "schemas/request.schema.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "observed_state_schema_exists",
+      "path": "schemas/observed-state.schema.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "desired_state_schema_exists",
+      "path": "schemas/desired-state.schema.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "patch_preview_schema_exists",
+      "path": "schemas/patch-preview.schema.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "apply_result_schema_exists",
+      "path": "schemas/apply-result.schema.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "apply_secrets_schema_exists",
+      "path": "schemas/apply-secrets.schema.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "normalize_request_script_exists",
+      "path": "scripts/normalize_request.py",
+      "type": "file_exists"
+    },
+    {
+      "name": "scan_current_state_script_exists",
+      "path": "scripts/scan_current_state.py",
+      "type": "file_exists"
+    },
+    {
+      "name": "build_desired_state_script_exists",
+      "path": "scripts/build_desired_state.py",
+      "type": "file_exists"
+    },
+    {
+      "name": "validate_plan_script_exists",
+      "path": "scripts/validate_plan.py",
+      "type": "file_exists"
+    },
+    {
+      "name": "generate_patch_script_exists",
+      "path": "scripts/generate_patch.py",
+      "type": "file_exists"
+    },
+    {
+      "name": "apply_patch_script_exists",
+      "path": "scripts/apply_patch.py",
+      "type": "file_exists"
+    },
+    {
+      "name": "verify_setup_script_exists",
+      "path": "scripts/verify_setup.py",
+      "type": "file_exists"
+    },
+    {
+      "name": "apply_real_script_exists",
+      "path": "scripts/apply_real.py",
+      "type": "file_exists"
+    },
+    {
+      "name": "first_success_path_exists",
+      "path": "references/first-success-path.md",
+      "type": "file_exists"
+    },
+    {
+      "name": "minimal_example_exists",
+      "path": "examples/input-minimal.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "normalized_bootstrap_example_exists",
+      "path": "examples/output-normalized-bootstrap.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "observed_state_example_exists",
+      "path": "examples/output-observed-state.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "desired_state_example_exists",
+      "path": "examples/output-desired-state-preview.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "plan_validation_example_exists",
+      "path": "examples/output-plan-validation-pass.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "patch_preview_example_exists",
+      "path": "examples/output-patch-preview.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "patch_preview_full_example_exists",
+      "path": "examples/output-patch-preview-full.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "apply_plan_dry_run_example_exists",
+      "path": "examples/output-apply-plan-dry-run.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "verify_setup_checklist_example_exists",
+      "path": "examples/output-verify-setup-checklist.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "verify_setup_checklist_full_example_exists",
+      "path": "examples/output-verify-setup-checklist-full.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "apply_result_ready_example_exists",
+      "path": "examples/output-apply-result-ready.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "apply_result_applied_with_secrets_example_exists",
+      "path": "examples/output-apply-result-applied-with-secrets.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "apply_secrets_input_example_exists",
+      "path": "examples/input-apply-secrets.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "desired_state_empty_bootstrap_observed_exists",
+      "path": "examples/observed-state-bootstrap-empty.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "root_cause_example_exists",
+      "path": "examples/input-root-cause-inspect.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "root_cause_doc_exists",
+      "path": "docs/root-cause-analysis.md",
+      "type": "file_exists"
+    },
+    {
+      "name": "secret_flow_doc_exists",
+      "path": "docs/secret-flow.md",
+      "type": "file_exists"
+    },
+    {
+      "name": "repair_playbook_exists",
+      "path": "docs/repair-playbook.md",
+      "type": "file_exists"
+    },
+    {
+      "name": "repair_priority_exists",
+      "path": "references/repair-priority.md",
+      "type": "file_exists"
+    },
+    {
+      "name": "root_cause_examples_exists",
+      "path": "references/root-cause-examples.md",
+      "type": "file_exists"
+    },
+    {
+      "name": "inspect_script_exists",
+      "path": "scripts/inspect_openclaw_multi_agent.py",
+      "type": "file_exists"
+    },
+    {
+      "name": "compat_scan_script_exists",
+      "path": "scripts/scan_openclaw_compat.py",
+      "type": "file_exists"
+    },
+    {
+      "name": "compat_scan_example_exists",
+      "path": "examples/output-compat-scan.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "scenario_bootstrap_example_exists",
+      "path": "examples/scenario-bootstrap.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "scenario_expand_example_exists",
+      "path": "examples/scenario-expand.json",
+      "type": "file_exists"
+    },
+    {
+      "name": "scenario_diagnose_example_exists",
+      "path": "examples/scenario-diagnose.json",
+      "type": "file_exists"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+# Local runtime / temp
+staging/
+*.log
+*.tmp
+*.bak
+
+docs/environment-evidence-*.json
+docs/environment-evidence-*.txt
+
+# Sensitive files
+credentials*
+*.secret
+*.token
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

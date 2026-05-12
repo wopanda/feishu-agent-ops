@@ -1,0 +1,14 @@
+{
+  "config": "examples/observed-state-empty.json",
+  "session": {
+    "dmScope": "per-account-channel-peer"
+  },
+  "feishu": {
+    "topLevelKeys": ["accounts", "domain", "enabled"],
+    "accounts": [],
+    "bindings": []
+  },
+  "agents": [],
+  "bindings": [],
+  "warnings": []
+}

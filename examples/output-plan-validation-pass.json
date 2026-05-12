@@ -1,0 +1,10 @@
+{
+  "status": "pass",
+  "summary": {
+    "issues": 0,
+    "scenario": "bootstrap",
+    "routingMode": "account",
+    "agentMode": "create-new"
+  },
+  "issues": []
+}

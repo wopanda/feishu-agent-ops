@@ -1,0 +1,354 @@
+{
+  "config": "examples/observed-state-rixin-11-lobsters.json",
+  "session": {
+    "dmScope": "per-account-channel-peer"
+  },
+  "feishu": {
+    "topLevelKeys": [
+      "accounts",
+      "domain",
+      "enabled",
+      "footer",
+      "replyMode",
+      "streaming"
+    ],
+    "accounts": [
+      {
+        "accountId": "rixin0",
+        "botName": "日新零号",
+        "name": "日新零号",
+        "enabled": true,
+        "hasCredentials": true,
+        "dmPolicy": null,
+        "groupPolicy": null,
+        "allowFromExists": true
+      },
+      {
+        "accountId": "rixin1",
+        "botName": "日新1号-总控",
+        "name": "日新1号-总控",
+        "enabled": true,
+        "hasCredentials": true,
+        "dmPolicy": null,
+        "groupPolicy": null,
+        "allowFromExists": true
+      },
+      {
+        "accountId": "rixin2",
+        "botName": "日新2号-调研",
+        "name": "日新2号-调研",
+        "enabled": true,
+        "hasCredentials": true,
+        "dmPolicy": null,
+        "groupPolicy": null,
+        "allowFromExists": true
+      },
+      {
+        "accountId": "rixin3",
+        "botName": "日新3号-开发",
+        "name": "日新3号-开发",
+        "enabled": true,
+        "hasCredentials": true,
+        "dmPolicy": null,
+        "groupPolicy": null,
+        "allowFromExists": true
+      },
+      {
+        "accountId": "rixin4",
+        "botName": "日新4号-项目",
+        "name": "日新4号-项目",
+        "enabled": true,
+        "hasCredentials": true,
+        "dmPolicy": null,
+        "groupPolicy": null,
+        "allowFromExists": true
+      },
+      {
+        "accountId": "rixin5",
+        "botName": "日新5号-写作",
+        "name": "日新5号-写作",
+        "enabled": true,
+        "hasCredentials": true,
+        "dmPolicy": null,
+        "groupPolicy": null,
+        "allowFromExists": true
+      },
+      {
+        "accountId": "default",
+        "botName": null,
+        "name": null,
+        "enabled": true,
+        "hasCredentials": false,
+        "dmPolicy": null,
+        "groupPolicy": "open",
+        "allowFromExists": true
+      },
+      {
+        "accountId": "rixin6",
+        "botName": "日新6号-日程",
+        "name": "日新6号-日程",
+        "enabled": true,
+        "hasCredentials": true,
+        "dmPolicy": null,
+        "groupPolicy": null,
+        "allowFromExists": true
+      },
+      {
+        "accountId": "rixin7",
+        "botName": "日新7号-生活",
+        "name": "日新7号-生活",
+        "enabled": true,
+        "hasCredentials": true,
+        "dmPolicy": null,
+        "groupPolicy": null,
+        "allowFromExists": true
+      },
+      {
+        "accountId": "rixin8",
+        "botName": "日新8号-IP",
+        "name": "日新8号-IP",
+        "enabled": true,
+        "hasCredentials": true,
+        "dmPolicy": null,
+        "groupPolicy": null,
+        "allowFromExists": true
+      },
+      {
+        "accountId": "rixin9",
+        "botName": "日新9号-视频",
+        "name": "日新9号-视频",
+        "enabled": true,
+        "hasCredentials": true,
+        "dmPolicy": null,
+        "groupPolicy": null,
+        "allowFromExists": true
+      },
+      {
+        "accountId": "xiaomx",
+        "botName": "日新-小龙虾驿站",
+        "name": "日新-小龙虾驿站",
+        "enabled": true,
+        "hasCredentials": true,
+        "dmPolicy": null,
+        "groupPolicy": null,
+        "allowFromExists": true
+      }
+    ],
+    "bindings": [
+      {
+        "agentId": "rixin0",
+        "accountId": "rixin0",
+        "routingKind": "account",
+        "channel": "feishu"
+      },
+      {
+        "agentId": "manager",
+        "accountId": "rixin1",
+        "routingKind": "account",
+        "channel": "feishu"
+      },
+      {
+        "agentId": "research",
+        "accountId": "rixin2",
+        "routingKind": "account",
+        "channel": "feishu"
+      },
+      {
+        "agentId": "dev",
+        "accountId": "rixin3",
+        "routingKind": "account",
+        "channel": "feishu"
+      },
+      {
+        "agentId": "project",
+        "accountId": "rixin4",
+        "routingKind": "account",
+        "channel": "feishu"
+      },
+      {
+        "agentId": "writer",
+        "accountId": "rixin5",
+        "routingKind": "account",
+        "channel": "feishu"
+      },
+      {
+        "agentId": "rixin6",
+        "accountId": "rixin6",
+        "routingKind": "account",
+        "channel": "feishu"
+      },
+      {
+        "agentId": "rixin7",
+        "accountId": "rixin7",
+        "routingKind": "account",
+        "channel": "feishu"
+      },
+      {
+        "agentId": "rixin8",
+        "accountId": "rixin8",
+        "routingKind": "account",
+        "channel": "feishu"
+      },
+      {
+        "agentId": "rixin9",
+        "accountId": "rixin9",
+        "routingKind": "account",
+        "channel": "feishu"
+      },
+      {
+        "agentId": "xiaomx",
+        "accountId": "xiaomx",
+        "routingKind": "account",
+        "channel": "feishu"
+      }
+    ]
+  },
+  "agents": [
+    {
+      "id": "rixin0",
+      "workspace": "~/.openclaw/workspace-rixin0",
+      "workspaceExists": true,
+      "agentDir": "~/.openclaw/agents/rixin0/agent",
+      "agentDirExists": true
+    },
+    {
+      "id": "manager",
+      "workspace": "~/.openclaw/workspace-manager",
+      "workspaceExists": true,
+      "agentDir": "~/.openclaw/agents/manager/agent",
+      "agentDirExists": true
+    },
+    {
+      "id": "research",
+      "workspace": "~/.openclaw/workspace-research",
+      "workspaceExists": true,
+      "agentDir": "~/.openclaw/agents/research/agent",
+      "agentDirExists": true
+    },
+    {
+      "id": "dev",
+      "workspace": "~/.openclaw/workspace-dev",
+      "workspaceExists": true,
+      "agentDir": "~/.openclaw/agents/dev/agent",
+      "agentDirExists": true
+    },
+    {
+      "id": "project",
+      "workspace": "~/.openclaw/workspace-project",
+      "workspaceExists": true,
+      "agentDir": "~/.openclaw/agents/project/agent",
+      "agentDirExists": true
+    },
+    {
+      "id": "writer",
+      "workspace": "~/.openclaw/workspace-writer",
+      "workspaceExists": true,
+      "agentDir": "~/.openclaw/agents/writer/agent",
+      "agentDirExists": true
+    },
+    {
+      "id": "rixin6",
+      "workspace": "~/.openclaw/workspace-rixin6",
+      "workspaceExists": true,
+      "agentDir": "~/.openclaw/agents/rixin6/agent",
+      "agentDirExists": true
+    },
+    {
+      "id": "rixin7",
+      "workspace": "~/.openclaw/workspace-rixin7",
+      "workspaceExists": true,
+      "agentDir": "~/.openclaw/agents/rixin7/agent",
+      "agentDirExists": true
+    },
+    {
+      "id": "rixin8",
+      "workspace": "~/.openclaw/workspace-rixin8",
+      "workspaceExists": true,
+      "agentDir": "~/.openclaw/agents/rixin8/agent",
+      "agentDirExists": true
+    },
+    {
+      "id": "rixin9",
+      "workspace": "~/.openclaw/workspace-rixin9",
+      "workspaceExists": true,
+      "agentDir": "~/.openclaw/agents/rixin9/agent",
+      "agentDirExists": true
+    },
+    {
+      "id": "xiaomx",
+      "workspace": "~/.openclaw/workspace-xiaomx",
+      "workspaceExists": true,
+      "agentDir": "~/.openclaw/agents/xiaomx/agent",
+      "agentDirExists": true
+    }
+  ],
+  "bindings": [
+    {
+      "agentId": "rixin0",
+      "accountId": "rixin0",
+      "routingKind": "account",
+      "channel": "feishu"
+    },
+    {
+      "agentId": "manager",
+      "accountId": "rixin1",
+      "routingKind": "account",
+      "channel": "feishu"
+    },
+    {
+      "agentId": "research",
+      "accountId": "rixin2",
+      "routingKind": "account",
+      "channel": "feishu"
+    },
+    {
+      "agentId": "dev",
+      "accountId": "rixin3",
+      "routingKind": "account",
+      "channel": "feishu"
+    },
+    {
+      "agentId": "project",
+      "accountId": "rixin4",
+      "routingKind": "account",
+      "channel": "feishu"
+    },
+    {
+      "agentId": "writer",
+      "accountId": "rixin5",
+      "routingKind": "account",
+      "channel": "feishu"
+    },
+    {
+      "agentId": "rixin6",
+      "accountId": "rixin6",
+      "routingKind": "account",
+      "channel": "feishu"
+    },
+    {
+      "agentId": "rixin7",
+      "accountId": "rixin7",
+      "routingKind": "account",
+      "channel": "feishu"
+    },
+    {
+      "agentId": "rixin8",
+      "accountId": "rixin8",
+      "routingKind": "account",
+      "channel": "feishu"
+    },
+    {
+      "agentId": "rixin9",
+      "accountId": "rixin9",
+      "routingKind": "account",
+      "channel": "feishu"
+    },
+    {
+      "agentId": "xiaomx",
+      "accountId": "xiaomx",
+      "routingKind": "account",
+      "channel": "feishu"
+    }
+  ],
+  "warnings": []
+}

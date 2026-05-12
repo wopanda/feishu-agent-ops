@@ -1,0 +1,10 @@
+{
+  "action": "repair",
+  "issues": [
+    "writer bot not replying",
+    "support binding points to wrong agent",
+    "dev workspace missing"
+  ],
+  "strategy": "minimal-safe-fix",
+  "confirmBeforeApply": true
+}

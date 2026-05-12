@@ -1,0 +1,23 @@
+{
+  "scenario": "bootstrap",
+  "goal": "from_one_to_many",
+  "routingMode": "account",
+  "agentMode": "create-new",
+  "defaultModel": "huandutech/gpt-5.4-high",
+  "bots": [
+    {
+      "accountId": "writer",
+      "botName": "写作机器人",
+      "appId": "cli_xxx_writer",
+      "appSecret": "secret_writer",
+      "roleName": "写作"
+    },
+    {
+      "accountId": "research",
+      "botName": "调研机器人",
+      "appId": "cli_xxx_research",
+      "appSecret": "secret_research",
+      "roleName": "调研"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "action": "plan",
+  "mode": "expand",
+  "defaultModel": "huandutech/gpt-5.4-high",
+  "existingAgents": ["manager", "research"],
+  "bots": [
+    {
+      "accountId": "writer",
+      "botName": "写作机器人",
+      "appId": "cli_xxx_writer",
+      "appSecret": "secret_writer",
+      "roleName": "写作"
+    },
+    {
+      "accountId": "dev",
+      "botName": "开发机器人",
+      "appId": "cli_xxx_dev",
+      "appSecret": "secret_dev",
+      "roleName": "开发"
+    },
+    {
+      "accountId": "support",
+      "botName": "客服机器人",
+      "appId": "cli_xxx_support",
+      "appSecret": "secret_support",
+      "roleName": "客服"
+    }
+  ]
+}

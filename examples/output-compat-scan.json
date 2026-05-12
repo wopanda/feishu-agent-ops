@@ -1,0 +1,41 @@
+{
+  "config": "/root/.openclaw/openclaw.json",
+  "openclaw": {
+    "cli_path": "/root/.local/bin/openclaw",
+    "version": "2026.4.2",
+    "source": "cli",
+    "raw": "OpenClaw 2026.4.2 (d74a122)"
+  },
+  "feishu_plugin": {
+    "active": "openclaw-lark",
+    "compat_mode": "mixed-transition",
+    "legacy_feishu": {
+      "present": true,
+      "enabled": false,
+      "version": null
+    },
+    "openclaw_lark": {
+      "present": true,
+      "enabled": true,
+      "version": "2026.4.1"
+    }
+  },
+  "config_shape": {
+    "session_dmScope": "per-channel-peer",
+    "feishu_top_level_keys": [
+      "accounts",
+      "domain",
+      "enabled",
+      "footer",
+      "replyMode",
+      "streaming"
+    ],
+    "accounts_count": 7,
+    "bindings_count": 6
+  },
+  "risk_flags": [
+    "duplicate_plugin_risk",
+    "dm_scope_not_account_isolated",
+    "accounts_bindings_not_closed"
+  ]
+}
