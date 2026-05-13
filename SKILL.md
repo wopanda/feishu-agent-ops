@@ -65,9 +65,12 @@ description: 当用户要把飞书机器人接入 OpenClaw,或排查多机器人
 2. `appSecret`
 3. `botName`
 
+⚠️ **必填约束**:`channels.feishu.accounts.<accountId>.name` 字段 **必须填写**(取 `botName`),不可省略。
+缺此字段会导致 OpenClaw 的 bot 发现机制输出 `No valid account config for accountId=... skipping agent=...`,该 bot 无法接收和回复消息。此前 rixin10/rixin11 因此被 skip 就是典型踩坑。
+
 - 收到后先扫描当前环境,判断是 **bootstrap(1→2)还是 expand(N→N+1)**
 - 若是 bootstrap:预览中需明确列出**结构升级项**(dmScope、现有 bot binding 补登记等),不能只加新 bot
-- 若是 expand:环境已成熟,追加 agent + account + binding 即可
+- 若是 expand:环境已成熟,追加 agent + account + binding 即可。追加 account 时强制包含 `name` 字段。
 
 如果用户已经给了这 3 个信息:
 - 不要继续表单式追问
@@ -215,8 +218,8 @@ normalize_request
 ```text
 normalize_request
 -> scan_current_state → 识别为多龙虾
--> build_desired_state (仅追加)
--> validate_plan
+-> build_desired_state (仅追加,account 必须含 name 字段)
+-> validate_plan (校验 accounts.<id>.name 不为空)
 -> generate_patch
 -> interaction_contract
 -> render_user_reply
@@ -273,6 +276,7 @@ scan_openclaw_compat
 - 对齐 `channels.feishu.accounts` 与 `bindings`
 - 检查 `accountId -> agentId` 是否闭环
 - 检查默认 Agent 是否抢路由
+- **检查 `accounts.<id>.name` 是否缺失**→ 日志关键字:`No valid account config for accountId=... skipping agent=...`,缺 name 会导致 bot 发现被跳过,完全无法收发消息
 
 ### 第 3 层:目录与 agent 结构层
 - 检查 `workspace-*`
